@@ -188,6 +188,9 @@ class ApiTests(unittest.TestCase):
 
         service = ScannerService(scanner_factory=factory, radio_probe=probe)
         with TestClient(create_app(service)) as client:
+            self.assertIn("开始扫描", client.get("/").text)
+            self.assertNotIn("signalChart", client.get("/").text)
+            self.assertIn('id="signalChart"', client.get("/monitor").text)
             self.assertEqual(client.get("/api/status").json()["radio_state"], "on")
             with client.websocket_connect("/ws", headers={"origin": "http://testserver"}) as ws:
                 snapshot = ws.receive_json()

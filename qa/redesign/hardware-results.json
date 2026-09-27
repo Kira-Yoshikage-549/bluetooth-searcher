@@ -1,0 +1,43 @@
+{
+  "errors": [],
+  "initial": {
+    "scan_state": "stopped",
+    "radio_state": "on",
+    "error": null,
+    "stopped_at_ms": 1790518327120,
+    "fresh_count": 0,
+    "device_count": 51
+  },
+  "live": {
+    "devices": 70,
+    "sampleCount": 982,
+    "visibleCards": 70,
+    "status": {
+      "scan_state": "scanning",
+      "radio_state": "on",
+      "error": null,
+      "stopped_at_ms": null,
+      "fresh_count": 38,
+      "device_count": 70
+    }
+  },
+  "compared": 4,
+  "stoppedBaseline": {
+    "end": 1790518420378,
+    "count": 1029
+  },
+  "historyPreserved": true,
+  "afterWait": {
+    "end": 1790518420378,
+    "count": 1029
+  },
+  "final": {
+    "scan_state": "stopped",
+    "radio_state": "on",
+    "error": null,
+    "stopped_at_ms": 1790518420378,
+    "fresh_count": 0,
+    "device_count": 70
+  },
+  "visibilityChecks": []
+}

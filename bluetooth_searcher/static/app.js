@@ -2,14 +2,14 @@
 
 const $ = (id) => document.getElementById(id);
 const elements = {
-  connection: $("connection"), start: $("startButton"), stop: $("stopButton"),
+  connection: $("connection"),
   radio: $("radioMetric"), scan: $("scanMetric"), fresh: $("freshCount"),
   total: $("deviceTotal"), notice: $("notice"), list: $("deviceList"),
   search: $("searchInput"), sort: $("sortSelect"), detail: $("detailContent"),
-  detailIndex: $("detailIndex"), chartEmpty: $("chartEmpty"),
+  chartEmpty: $("chartEmpty"),
 };
 
-const palette = ["#3268e9", "#e68145", "#20a793", "#9b70d6"];
+const palette = ["#0071e3", "#c08047", "#328b79", "#9972c3"];
 const devices = new Map();
 const histories = new Map();
 const selected = [];
@@ -23,15 +23,20 @@ let windowSeconds = 60;
 let busy = false;
 let autoSelected = false;
 let transientNotice = null;
+let connected = false;
+let statusReceived = false;
+const cardNodes = new Map();
+let listOrder = [];
+let lastSortAt = -Infinity;
+let forceListSort = true;
+let listHovered = false;
+let renderedDetailId;
+let detailFields = [];
+const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, (character) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-  }[character]));
-}
-
-function shortAddress(value) {
-  return value || "地址未知";
+function setText(node, value) {
+  const text = String(value ?? "");
+  if (node.textContent !== text) node.textContent = text;
 }
 
 function ageText(timeMs) {
@@ -61,8 +66,9 @@ function broadcastCompany(device) {
 }
 
 function setNotice(text, tone = "neutral") {
-  elements.notice.textContent = text;
+  setText(elements.notice, text);
   elements.notice.dataset.tone = tone;
+  elements.notice.hidden = tone !== "error";
 }
 
 function showTransientNotice(text, tone = "error") {
@@ -71,6 +77,7 @@ function showTransientNotice(text, tone = "error") {
 }
 
 function applyStatus(status) {
+  statusReceived = true;
   currentStatus = status;
   scheduleRender();
 }
@@ -129,109 +136,179 @@ function scheduleRender() {
 function renderStatus() {
   const radioLabels = { on: "已开启", off: "已关闭", missing: "未找到", disabled: "已禁用", unknown: "未知" };
   const scanLabels = { stopped: "待命", scanning: "扫描中", error: "需要处理" };
-  elements.radio.textContent = radioLabels[currentStatus.radio_state] || "未知";
-  elements.scan.textContent = scanLabels[currentStatus.scan_state] || "待命";
+  const scanning = currentStatus.scan_state === "scanning";
   const freshCount = [...devices.values()].filter((device) => freshness(device) === "fresh").length;
-  elements.fresh.textContent = freshCount;
-  elements.total.textContent = devices.size;
-  elements.start.disabled = busy || currentStatus.scan_state === "scanning";
-  elements.stop.disabled = busy || currentStatus.scan_state !== "scanning";
-  if (transientNotice && Date.now() < transientNotice.until) {
-    setNotice(transientNotice.text, transientNotice.tone);
-  } else if (currentStatus.error) setNotice(currentStatus.error, "error");
-  else if (currentStatus.scan_state === "scanning") {
-    setNotice(freshCount ? "正在接收附近的 BLE 广播；选中设备可比较信号变化。" : "扫描中，当前未收到新的 BLE 广播。请确认附近设备正在广播。", freshCount ? "success" : "neutral");
-  } else if (devices.size) setNotice("扫描已停止；历史曲线保留至关闭服务。", "neutral");
-  else setNotice("点击“开始扫描”接收周围 BLE 广播。", "neutral");
+  setText(elements.radio, radioLabels[currentStatus.radio_state] || "未知");
+  setText(elements.scan, busy ? (busy === "start" ? "正在启动" : "正在停止") : connected ? scanLabels[currentStatus.scan_state] || "待命" : "连接中");
+  setText(elements.fresh, freshCount);
+  setText(elements.total, devices.size);
+  document.querySelectorAll("[data-scan-action]").forEach((button) => {
+    const start = button.dataset.scanAction === "start";
+    button.disabled = !!busy || !connected || !statusReceived || (start ? scanning : !scanning);
+    button.setAttribute("aria-busy", String(busy === button.dataset.scanAction));
+    setText(button, busy === button.dataset.scanAction ? (start ? "正在启动…" : "正在停止…") : start ? "开始扫描" : "停止扫描");
+  });
+  if (transientNotice && Date.now() < transientNotice.until) setNotice(transientNotice.text, transientNotice.tone);
+  else if (currentStatus.error) setNotice(currentStatus.error, "error");
+  else setNotice("");
 }
 
-function deviceCard(device) {
-  const id = escapeHtml(device.id);
-  const name = escapeHtml(device.name || "未命名设备");
-  const company = escapeHtml(broadcastCompany(device));
-  const brand = device.possible_brand ? `<span class="brand-hint">可能 ${escapeHtml(device.possible_brand)}</span>` : "";
-  const stale = freshness(device);
-  const latest = device.last_rssi == null ? "—" : `${device.last_rssi} <small>dBm</small>`;
+function createDeviceCard(device, animate) {
+  const node = document.createElement("article");
+  node.className = "device-card";
+  node.dataset.deviceId = device.id;
+  node.innerHTML = `<button type="button" class="device-open">
+    <div class="device-top"><span class="device-name"></span><span class="signal-value"><span class="rssi-number"></span><small>dBm</small></span></div>
+    <div class="device-meta"><span class="mono"></span><span class="meta-dot">·</span><span class="device-age"></span></div>
+    <div class="device-bottom"><div class="signal-track"><span></span></div><span class="strength-label"></span></div>
+    <div class="device-company"><span class="company-value"></span><span class="brand-hint"></span></div>
+    <div class="stale-tag" hidden></div>
+  </button>
+  <label class="compare-control" title="加入或移出信号对比"><input type="checkbox"><span>对比</span></label>`;
+  const card = { node };
+  for (const [key, selector] of Object.entries({
+    button: ".device-open", name: ".device-name", rssi: ".rssi-number", address: ".mono",
+    age: ".device-age", fill: ".signal-track span", strength: ".strength-label",
+    company: ".company-value", brand: ".brand-hint", stale: ".stale-tag", checkbox: "input",
+  })) card[key] = node.querySelector(selector);
+  card.button.dataset.id = device.id;
+  card.checkbox.dataset.id = device.id;
+  if (animate && !motionPreference.matches) {
+    node.classList.add("new-device");
+    node.addEventListener("animationend", () => node.classList.remove("new-device"), { once: true });
+  }
+  return card;
+}
+
+function updateDeviceCard(card, device) {
+  const name = device.name || "未命名设备";
+  const state = freshness(device);
   const signal = strength(device.last_rssi ?? -110);
-  const checked = selected.includes(device.id) ? "checked" : "";
-  const focusedClass = focused === device.id ? " focused" : "";
-  return `<article class="device-card ${stale}${focusedClass}">
-    <button type="button" class="device-open" data-id="${id}" aria-label="查看 ${name} 的详情">
-      <div class="device-top"><span class="device-name">${name}</span>${brand}<span class="signal-value">${latest}</span></div>
-      <div class="device-meta"><span class="mono">${escapeHtml(shortAddress(device.address))}</span><span class="meta-dot">·</span><span>${escapeHtml(ageText(device.last_seen_ms))}</span></div>
-      <div class="device-bottom"><div class="signal-track"><span class="${signal.key}" style="width:${signal.width}%"></span></div><span class="strength-label ${signal.key}">${signal.text}</span></div>
-      <div class="device-company">广播厂商：${company}</div>
-      ${stale !== "fresh" ? `<div class="stale-tag">${stale === "stale" ? "暂无新信号" : "未再检测到"} · 上次测量</div>` : ""}
-    </button>
-    <label class="compare-control" title="加入或移出信号对比"><input type="checkbox" data-id="${id}" ${checked}><span>对比</span></label>
-  </article>`;
+  for (const key of ["fresh", "stale", "missing"]) card.node.classList.toggle(key, state === key);
+  card.node.classList.toggle("focused", focused === device.id);
+  card.button.setAttribute("aria-label", `查看 ${name} 的详情`);
+  card.button.setAttribute("aria-pressed", String(focused === device.id));
+  card.checkbox.setAttribute("aria-label", `对比 ${name}`);
+  card.checkbox.checked = selected.includes(device.id);
+  setText(card.name, name);
+  card.name.title = name;
+  setText(card.rssi, device.last_rssi ?? "—");
+  setText(card.address, device.address || "地址未知");
+  setText(card.age, ageText(device.last_seen_ms));
+  card.fill.className = signal.key;
+  card.fill.style.transform = `scaleX(${signal.width / 100})`;
+  setText(card.strength, signal.text);
+  setText(card.company, `广播厂商：${broadcastCompany(device)}`);
+  card.company.title = broadcastCompany(device);
+  setText(card.brand, device.possible_brand ? `可能 ${device.possible_brand}` : "");
+  card.stale.hidden = state === "fresh";
+  setText(card.stale, state === "stale" ? "暂无新信号 · 上次测量" : "未再检测到 · 上次测量");
 }
 
 function renderDevices() {
   const query = elements.search.value.trim().toLocaleLowerCase();
-  const rows = [...devices.values()].filter((device) => {
-    if (!query) return true;
-    return [device.name, device.address, device.possible_brand, ...(device.broadcast_companies || [])]
-      .some((value) => String(value || "").toLocaleLowerCase().includes(query));
-  });
-  const sortMode = elements.sort.value;
-  rows.sort((a, b) => {
-    if (sortMode === "name") return (a.name || "").localeCompare(b.name || "", "zh-CN");
-    if (sortMode === "recent") return b.last_seen_ms - a.last_seen_ms;
-    return (b.last_rssi ?? -999) - (a.last_rssi ?? -999);
-  });
-  if (!rows.length) {
-    elements.list.innerHTML = query
-      ? '<div class="empty-list small"><strong>没有匹配的设备</strong><p>换个名称、地址或厂商试试。</p></div>'
-      : '<div class="empty-list"><div class="empty-rings" aria-hidden="true"><span></span></div><strong>等待蓝牙信号</strong><p>开始扫描后，收到的设备会出现在这里。</p></div>';
-    return;
+  const now = performance.now();
+  const interacting = listHovered || elements.list.contains(document.activeElement);
+  for (const [id, card] of cardNodes) {
+    if (!devices.has(id)) { card.node.remove(); cardNodes.delete(id); }
   }
-  elements.list.innerHTML = rows.map(deviceCard).join("");
-}
-
-function detailField(label, value, isMono = false) {
-  return `<div class="detail-field"><dt>${escapeHtml(label)}</dt><dd${isMono ? ' class="mono"' : ""}>${escapeHtml(value)}</dd></div>`;
+  listOrder = listOrder.filter((id) => devices.has(id));
+  const newIds = [...devices.keys()].filter((id) => !cardNodes.has(id));
+  for (const id of newIds) {
+    cardNodes.set(id, createDeviceCard(devices.get(id), newIds.length <= 8));
+    listOrder.push(id);
+  }
+  if (forceListSort || (!interacting && now - lastSortAt >= 1000)) {
+    const sortMode = elements.sort.value;
+    listOrder.sort((aId, bId) => {
+      const a = devices.get(aId), b = devices.get(bId);
+      if (sortMode === "name") return (a.name || "").localeCompare(b.name || "", "zh-CN");
+      if (sortMode === "recent") return b.last_seen_ms - a.last_seen_ms;
+      return (b.last_rssi ?? -999) - (a.last_rssi ?? -999);
+    });
+    lastSortAt = now;
+    forceListSort = false;
+  }
+  // Reuse existing nodes. Only move them when the actual order changes.
+  const scrollTop = elements.list.scrollTop;
+  let nextNode = $("deviceEmpty").nextElementSibling;
+  let visibleCount = 0;
+  for (const id of listOrder) {
+    const device = devices.get(id), card = cardNodes.get(id);
+    const visible = !query || [device.name, device.address, device.possible_brand, ...(device.broadcast_companies || [])]
+      .some((value) => String(value || "").toLocaleLowerCase().includes(query));
+    card.node.hidden = !visible;
+    if (visible) { visibleCount++; updateDeviceCard(card, device); }
+    if (card.node !== nextNode) elements.list.insertBefore(card.node, nextNode);
+    else nextNode = nextNode.nextElementSibling;
+  }
+  $("deviceEmpty").hidden = visibleCount > 0;
+  setText($("emptyTitle"), query ? "没有匹配的设备" : "暂无设备");
+  elements.list.scrollTop = scrollTop;
 }
 
 function renderDetails() {
   const device = focused ? devices.get(focused) : null;
+  const id = device?.id ?? null;
+  const changed = renderedDetailId !== id;
   if (!device) {
-    elements.detail.textContent = "选择左侧设备查看广播信息与识别依据。";
-    elements.detail.className = "detail-empty";
-    elements.detailIndex.textContent = "—";
+    if (changed) {
+      elements.detail.textContent = "请选择设备";
+      elements.detail.className = "detail-empty";
+    }
+    renderedDetailId = id;
     return;
   }
-  elements.detail.className = "detail-content";
-  elements.detailIndex.textContent = "BLE 广播";
-  const ids = device.company_ids?.length ? device.company_ids.join("、") : "未提供";
-  const services = device.service_uuids?.length ? device.service_uuids.join("、") : "未提供";
-  elements.detail.innerHTML = `<div class="detail-intro"><strong>${escapeHtml(device.name || "未命名设备")}</strong><span class="detail-state ${freshness(device)}">${freshness(device) === "fresh" ? "最近收到" : freshness(device) === "stale" ? "暂无新信号" : "未再检测到"}</span></div>
-    <dl class="detail-grid">
-      ${detailField("设备地址", device.address, true)}
-      ${detailField("广播名称", device.advertised_name || "未提供")}
-      ${detailField("Windows 已配对设备名", device.paired_name || "未提供")}
-      ${detailField("系统名称", device.system_name || "未提供")}
-      ${detailField("广播厂商", broadcastCompany(device))}
-      ${detailField("厂商编号", ids, true)}
-      ${detailField("可能品牌", device.possible_brand ? `${device.possible_brand}（${device.brand_source}）` : "未知")}
-      ${detailField("服务 UUID", services, true)}
-      ${detailField("最后接收", ageText(device.last_seen_ms))}
-    </dl>`;
+  if (changed) {
+    elements.detail.className = "detail-content";
+    elements.detail.innerHTML = '<div class="detail-intro"><strong></strong><span class="detail-state"></span></div><dl class="detail-grid"></dl>';
+    const grid = elements.detail.querySelector("dl");
+    detailFields = ["设备地址", "广播名称", "Windows 已配对设备名", "系统名称", "广播厂商", "厂商编号", "可能品牌", "服务 UUID", "最后接收"].map((label, index) => {
+      const field = document.createElement("div");
+      field.className = "detail-field";
+      const term = document.createElement("dt"), value = document.createElement("dd");
+      term.textContent = label;
+      if ([0, 5, 7].includes(index)) value.className = "mono";
+      field.append(term, value);
+      grid.append(field);
+      return value;
+    });
+    if (!motionPreference.matches) elements.detail.animate([{ opacity: .25, transform: "translateY(4px)" }, { opacity: 1, transform: "translateY(0)" }], { duration: 180, easing: "ease-out" });
+  }
+  renderedDetailId = id;
+  setText(elements.detail.querySelector("strong"), device.name || "未命名设备");
+  const state = freshness(device), badge = elements.detail.querySelector(".detail-state");
+  badge.className = `detail-state ${state}`;
+  setText(badge, state === "fresh" ? "最近收到" : state === "stale" ? "暂无新信号" : "未再检测到");
+  const values = [
+    device.address, device.advertised_name || "未提供", device.paired_name || "未提供", device.system_name || "未提供",
+    broadcastCompany(device), device.company_ids?.length ? device.company_ids.join("、") : "未提供",
+    device.possible_brand ? `${device.possible_brand}（${device.brand_source}）` : "未知",
+    device.service_uuids?.length ? device.service_uuids.join("、") : "未提供", ageText(device.last_seen_ms),
+  ];
+  detailFields.forEach((field, index) => setText(field, values[index]));
 }
 
+Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
 const chart = new Chart($("signalChart"), {
   type: "line",
   data: { datasets: [] },
   options: {
     responsive: true, maintainAspectRatio: false, animation: false, parsing: false,
     interaction: { mode: "nearest", intersect: false },
-    elements: { point: { radius: 0, hitRadius: 8, hoverRadius: 4 }, line: { borderWidth: 2, tension: 0.13 } },
-    plugins: { legend: { position: "bottom", labels: { usePointStyle: true, boxWidth: 8, padding: 18, color: "#526078", font: { size: 11 } } }, tooltip: {
+    elements: { point: { radius: 0, hitRadius: 8, hoverRadius: 4 }, line: { borderWidth: 2, tension: 0 } },
+    plugins: { legend: { position: "bottom", labels: {
+      usePointStyle: true, boxWidth: 8, padding: 18, color: "#6e6e73", font: { size: 11 },
+      generateLabels: (instance) => Chart.defaults.plugins.legend.labels.generateLabels(instance).map((label) => {
+        const characters = Array.from(label.text);
+        return { ...label, text: characters.length > 18 ? characters.slice(0, 17).join("") + "…" : label.text };
+      }),
+    } }, tooltip: {
       callbacks: { title: (items) => items.length ? new Date(items[0].parsed.x).toLocaleTimeString("zh-CN", { hour12: false }) : "", label: (item) => `${item.dataset.label}: ${item.parsed.y} dBm` },
     } },
     scales: {
-      x: { type: "linear", grid: { color: "#edf0f5" }, border: { display: false }, ticks: { color: "#8994a8", maxTicksLimit: 6, callback: (value) => new Date(value).toLocaleTimeString("zh-CN", { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" }) } },
-      y: { suggestedMin: -100, suggestedMax: -20, grid: { color: "#edf0f5" }, border: { display: false }, ticks: { color: "#8994a8", callback: (value) => `${value} dBm` } },
+      x: { type: "linear", grid: { color: "#f0f0f3" }, border: { display: false }, ticks: { color: "#86868b", maxTicksLimit: 6, callback: (value) => new Date(value).toLocaleTimeString("zh-CN", { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" }) } },
+      y: { suggestedMin: -100, suggestedMax: -20, grid: { color: "#f0f0f3" }, border: { display: false }, ticks: { color: "#86868b", callback: (value) => `${value} dBm` } },
     },
   },
 });
@@ -268,6 +345,7 @@ function renderChart() {
 }
 
 function render() {
+  if (document.hidden) return;
   renderStatus();
   renderDevices();
   renderDetails();
@@ -278,6 +356,9 @@ function connect() {
   const protocol = location.protocol === "https:" ? "wss:" : "ws:";
   socket = new WebSocket(`${protocol}//${location.host}/ws`);
   socket.addEventListener("open", () => {
+    connected = true;
+    renderStatus();
+    scheduleRender();
     elements.connection.classList.add("online");
     elements.connection.querySelector("span:last-child").textContent = "本机已连接";
   });
@@ -287,6 +368,9 @@ function connect() {
     if (message.type === "delta") applyDelta(message);
   });
   socket.addEventListener("close", () => {
+    connected = false;
+    renderStatus();
+    scheduleRender();
     elements.connection.classList.remove("online");
     elements.connection.querySelector("span:last-child").textContent = "正在重连";
     clearTimeout(reconnectTimer);
@@ -295,24 +379,33 @@ function connect() {
 }
 
 async function scanCommand(action) {
-  busy = true;
-  scheduleRender();
+  if (busy || !connected || !statusReceived) return;
+  busy = action;
+  transientNotice = null;
+  renderStatus();
   try {
     const response = await fetch(`/api/scan/${action}`, { method: "POST" });
     const status = await response.json();
+    if (!status.scan_state) throw new Error("服务未返回有效的扫描状态");
     applyStatus(status);
+    if (!response.ok && !status.error) showTransientNotice(`扫描操作失败（${response.status}），请重试。`);
   } catch (error) {
-    showTransientNotice(`无法连接本地服务：${error.message}`);
+    showTransientNotice(`无法完成扫描操作：${error.message}`);
   } finally {
     busy = false;
+    renderStatus();
     scheduleRender();
   }
 }
 
-elements.start.addEventListener("click", () => scanCommand("start"));
-elements.stop.addEventListener("click", () => scanCommand("stop"));
-elements.search.addEventListener("input", scheduleRender);
-elements.sort.addEventListener("change", scheduleRender);
+document.querySelectorAll("[data-scan-action]").forEach((button) => {
+  button.addEventListener("click", () => scanCommand(button.dataset.scanAction));
+});
+elements.search.addEventListener("input", () => { forceListSort = true; scheduleRender(); });
+elements.sort.addEventListener("change", () => { forceListSort = true; scheduleRender(); });
+elements.list.addEventListener("pointerenter", (event) => { if (event.pointerType !== "touch") listHovered = true; });
+elements.list.addEventListener("pointerleave", () => { listHovered = false; scheduleRender(); });
+elements.list.addEventListener("focusout", scheduleRender);
 elements.list.addEventListener("click", (event) => {
   const button = event.target.closest(".device-open");
   if (!button) return;
@@ -336,6 +429,7 @@ elements.list.addEventListener("change", (event) => {
 });
 document.querySelectorAll("[data-window]").forEach((button) => button.addEventListener("click", () => {
   windowSeconds = Number(button.dataset.window);
+  $("timeRange").classList.toggle("long-window", windowSeconds === 300);
   document.querySelectorAll("[data-window]").forEach((item) => {
     const active = item === button;
     item.classList.toggle("active", active);
@@ -344,6 +438,33 @@ document.querySelectorAll("[data-window]").forEach((button) => button.addEventLi
   scheduleRender();
 }));
 
-fetch("/api/status").then((response) => response.json()).then(applyStatus).catch(() => {});
+// Progressive enhancement: content remains visible if observers are unavailable.
+if ("IntersectionObserver" in window) {
+  const revealObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        entry.target.classList.remove("reveal-pending");
+        revealObserver.unobserve(entry.target);
+      }
+    }
+  }, { threshold: 0.05 });
+  if (!motionPreference.matches) document.querySelectorAll(".reveal").forEach((node) => {
+    node.classList.add("reveal-pending");
+    revealObserver.observe(node);
+  });
+}
+motionPreference.addEventListener("change", () => {
+  if (motionPreference.matches) {
+    document.querySelectorAll(".reveal-pending").forEach((node) => node.classList.remove("reveal-pending"));
+    document.getAnimations().forEach((animation) => animation.cancel());
+  }
+});
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) scheduleRender();
+});
+renderStatus();
+fetch("/api/status").then((response) => response.json()).then((status) => {
+  if (!statusReceived) applyStatus(status);
+}).catch(() => {});
 connect();
 setInterval(scheduleRender, 1000);

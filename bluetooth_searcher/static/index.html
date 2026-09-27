@@ -3,80 +3,39 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f5f7fb">
-  <title>蓝牙信号探测器</title>
+  <meta name="theme-color" content="#fafafa">
+  <title>蓝牙信号探测器 · 让信号清晰可见</title>
   <link rel="stylesheet" href="/static/styles.css">
-  <script defer src="/static/vendor/chart.umd.min.js"></script>
-  <script defer src="/static/app.js"></script>
+  <script defer src="/static/home.js"></script>
 </head>
-<body>
-  <div class="shell">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
-        <div>
-          <div class="eyebrow">LOCAL BLUETOOTH MONITOR</div>
-          <h1>蓝牙信号探测器</h1>
-        </div>
+<body class="home-page">
+  <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="icon-bluetooth" viewBox="0 0 24 32"><path d="M5 7 20 23 12 30V2l8 7L5 25"/></symbol>
+  </defs></svg>
+  <header class="topbar"><nav class="nav-inner" aria-label="主导航">
+    <a class="brand" href="/" aria-label="蓝牙信号探测器首页"><svg class="brand-mark" aria-hidden="true"><use href="#icon-bluetooth"/></svg><span>蓝牙信号探测器</span></a>
+  </nav></header>
+  <main class="home-main">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <h1 id="heroTitle" class="hero-enter">让附近的信号，<br><span>清晰可见。</span></h1>
+        <div class="hero-actions hero-enter"><button class="button button-primary button-hero" id="startButton" type="button">开始扫描</button></div>
+        <p id="homeError" class="home-error" role="alert" hidden></p>
       </div>
-      <div class="topbar-actions">
-        <div class="connection" id="connection" aria-live="polite"><span class="dot"></span><span>正在连接</span></div>
-        <button class="button button-primary" id="startButton" type="button">开始扫描</button>
-        <button class="button button-quiet" id="stopButton" type="button" disabled>停止扫描</button>
+      <div class="signal-art hero-enter" id="signalArt" aria-hidden="true">
+        <div class="signal-halo"></div>
+        <svg class="signal-field" viewBox="0 0 760 300" fill="none">
+          <defs><linearGradient id="ringGradient" x1="380" y1="40" x2="380" y2="280" gradientUnits="userSpaceOnUse"><stop stop-color="#d8dce4"/><stop offset=".5" stop-color="#f0f2f6"/><stop offset="1" stop-color="#b9cae7"/></linearGradient></defs>
+          <ellipse class="field-ring" cx="380" cy="171" rx="348" ry="118"/>
+          <ellipse class="field-ring" cx="380" cy="171" rx="264" ry="90"/>
+          <ellipse class="field-ring" cx="380" cy="171" rx="178" ry="61"/>
+          <ellipse class="field-ring inner-ring" cx="380" cy="171" rx="91" ry="32"/>
+          <ellipse class="signal-wave" cx="380" cy="171" rx="178" ry="61"/>
+          <ellipse class="signal-wave wave-two" cx="380" cy="171" rx="178" ry="61"/>
+        </svg>
+        <div class="signal-core"><svg><use href="#icon-bluetooth"/></svg></div>
       </div>
-    </header>
-
-    <main>
-      <section class="intro">
-        <div>
-          <div class="section-kicker"><span class="kicker-line"></span> 实时接收 · 本机处理</div>
-          <h2>看见附近的蓝牙信号</h2>
-          <p>扫描正在广播的低功耗蓝牙设备。强度来自实际接收的信号，以 dBm 显示。</p>
-        </div>
-        <div class="metrics" aria-label="扫描概览">
-          <div class="metric"><span>蓝牙适配器</span><strong id="radioMetric">检查中</strong></div>
-          <div class="metric"><span>扫描状态</span><strong id="scanMetric">待命</strong></div>
-          <div class="metric metric-count"><span>最近收到</span><strong><span id="freshCount">0</span><small>台设备</small></strong></div>
-        </div>
-      </section>
-
-      <div class="notice" id="notice" role="status" aria-live="polite">点击“开始扫描”接收周围 BLE 广播。</div>
-
-      <div class="workspace">
-        <section class="panel device-panel" aria-labelledby="deviceTitle">
-          <div class="panel-heading">
-            <div><div class="panel-kicker">DISCOVERED DEVICES</div><h3 id="deviceTitle">附近设备 <span id="deviceTotal" class="count-pill">0</span></h3></div>
-            <div class="live-mark"><span></span> 实时列表</div>
-          </div>
-          <div class="device-tools">
-            <label class="search-box"><span class="search-icon" aria-hidden="true">⌕</span><span class="sr-only">搜索设备</span><input id="searchInput" type="search" placeholder="搜索名称、地址或厂商"></label>
-            <label class="sort-box"><span class="sr-only">排序</span><select id="sortSelect"><option value="strength">信号最强</option><option value="recent">最近收到</option><option value="name">设备名称</option></select></label>
-          </div>
-          <div class="list-caption"><span>设备与最新信号</span><span>最多对比 4 台</span></div>
-          <div id="deviceList" class="device-list" aria-live="polite">
-            <div class="empty-list"><div class="empty-rings" aria-hidden="true"><span></span></div><strong>等待蓝牙信号</strong><p>开始扫描后，收到的设备会出现在这里。</p></div>
-          </div>
-        </section>
-
-        <div class="right-column">
-          <section class="panel chart-panel" aria-labelledby="chartTitle">
-            <div class="panel-heading chart-heading">
-              <div><div class="panel-kicker">SIGNAL HISTORY</div><h3 id="chartTitle">信号强度趋势</h3></div>
-              <div class="segmented" role="group" aria-label="图表时间范围"><button type="button" data-window="60" class="active" aria-pressed="true">最近 60 秒</button><button type="button" data-window="300" aria-pressed="false">最近 5 分钟</button></div>
-            </div>
-            <p class="chart-subtitle">RSSI · dBm <span class="subtitle-separator">/</span> 数值越接近 0，接收信号通常越强</p>
-            <div class="chart-wrap"><canvas id="signalChart" aria-label="所选设备的实时信号强度曲线" role="img"></canvas><div class="chart-empty" id="chartEmpty">从左侧选择设备，开始观察信号曲线</div></div>
-            <div class="chart-foot"><span><i class="foot-dot"></i> 只绘制收到的信号样本</span><span>超过 5 秒无新样本时曲线断开</span></div>
-          </section>
-
-          <section class="panel detail-panel" aria-labelledby="detailTitle">
-            <div class="panel-heading detail-heading"><div><div class="panel-kicker">DEVICE DETAILS</div><h3 id="detailTitle">设备详情</h3></div><span class="detail-index" id="detailIndex">—</span></div>
-            <div id="detailContent" class="detail-empty">选择左侧设备查看广播信息与识别依据。</div>
-          </section>
-        </div>
-      </div>
-      <p class="footer-note">设备可能使用随机地址；厂商编号仅表示广播数据中的注册公司，品牌由设备名称推测。</p>
-    </main>
-  </div>
+    </section>
+  </main>
 </body>
 </html>

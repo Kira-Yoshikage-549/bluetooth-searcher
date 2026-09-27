@@ -34,6 +34,10 @@ def create_app(service: ScannerService | None = None) -> FastAPI:
     async def index():
         return FileResponse(STATIC_DIR / "index.html", media_type="text/html")
 
+    @app.get("/monitor")
+    async def monitor():
+        return FileResponse(STATIC_DIR / "monitor.html", media_type="text/html")
+
     @app.get("/api/status")
     async def status():
         return scanner.status()

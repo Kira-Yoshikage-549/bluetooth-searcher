@@ -1,0 +1,83 @@
+{
+  "checks": [
+    "initial state and empty list",
+    "all start controls immediately busy",
+    "start navigates and focuses monitor",
+    "offscreen decorative animation paused",
+    "first device auto selected",
+    "untrusted device text stays text",
+    "empty search state",
+    "name search",
+    "address search",
+    "company search",
+    "name sort",
+    "four device comparison limit",
+    "limit notice visible",
+    "device details selection",
+    "keyboard range switch",
+    "focused list never reorders or replaces nodes",
+    "detail nodes and scroll position retained",
+    "automatic strongest-first sort resumes",
+    "120-device live update reuses every card",
+    "render work stays within update budget",
+    "no sustained main-thread long tasks",
+    "stale sample state",
+    "missing device state",
+    "chart breaks five-second gaps",
+    "disconnect disables scan controls",
+    "websocket reconnect and selection preserved",
+    "stop keeps historical samples and fixed chart time",
+    "removed focused device clears selection and detail",
+    "hardware error is visible",
+    "no horizontal overflow at 1440",
+    "no horizontal overflow at 1024",
+    "no horizontal overflow at 768",
+    "no horizontal overflow at 375",
+    "no horizontal overflow at 320",
+    "reduced motion disables decoration and smooth scrolling",
+    "visible signal animation resumes",
+    "no page errors",
+    "all assets remain local / no network dependencies"
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "heroOverflow": false,
+      "monitorOverflow": false
+    },
+    {
+      "width": 1024,
+      "heroOverflow": false,
+      "monitorOverflow": false
+    },
+    {
+      "width": 768,
+      "heroOverflow": false,
+      "monitorOverflow": false
+    },
+    {
+      "width": 375,
+      "heroOverflow": false,
+      "monitorOverflow": false
+    },
+    {
+      "width": 320,
+      "heroOverflow": false,
+      "monitorOverflow": false
+    }
+  ],
+  "errors": [],
+  "externalRequests": [],
+  "performance": {
+    "devices": 120,
+    "compared": 4,
+    "seconds": 20,
+    "updateHz": 5,
+    "renderCount": 101,
+    "renderMedianMs": 6,
+    "renderP95Ms": 16.899999998509884,
+    "frameP95Ms": 6.200000000000728,
+    "longTasks": [],
+    "nodesReused": true
+  }
+}

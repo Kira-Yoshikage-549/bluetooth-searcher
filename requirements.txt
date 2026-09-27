@@ -1,0 +1,5 @@
+bleak==3.0.2
+fastapi==0.141.1
+uvicorn==0.53.0
+websockets==16.0
+

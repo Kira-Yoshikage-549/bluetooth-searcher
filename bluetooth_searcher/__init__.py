@@ -1,0 +1,2 @@
+"""Local Bluetooth signal monitor."""
+

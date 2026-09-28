@@ -1,0 +1,64 @@
+{
+  "checks": [
+    "home has only entry content",
+    "home has no explanatory microcopy or monitor shortcut",
+    "home start shows busy state before response",
+    "loading keeps button label and width",
+    "failed start stays home with a clear error",
+    "home start is retryable",
+    "successful start navigates to monitor",
+    "monitor has no explanatory captions",
+    "neutral notice is hidden",
+    "120 devices are available with bounded card DOM",
+    "live devices render and first is selected",
+    "untrusted names are text",
+    "search remains available",
+    "four-device limit remains enforced",
+    "five-minute chart range works",
+    "windowed updates reuse mounted nodes and retain keyboard focus",
+    "stop keeps the monitor page",
+    "stopped history stays fixed",
+    "WebSocket reconnect works on monitor",
+    "brand returns to clean home",
+    "both pages fit 1440px",
+    "both pages fit 1024px",
+    "both pages fit 768px",
+    "both pages fit 375px",
+    "both pages fit 320px",
+    "home honours reduced motion",
+    "no browser script errors"
+  ],
+  "errors": [],
+  "viewports": [
+    {
+      "width": 1440,
+      "homeOverflow": false,
+      "monitorOverflow": false
+    },
+    {
+      "width": 1024,
+      "homeOverflow": false,
+      "monitorOverflow": false
+    },
+    {
+      "width": 768,
+      "homeOverflow": false,
+      "monitorOverflow": false
+    },
+    {
+      "width": 375,
+      "homeOverflow": false,
+      "monitorOverflow": false
+    },
+    {
+      "width": 320,
+      "homeOverflow": false,
+      "monitorOverflow": false
+    }
+  ],
+  "performance": {
+    "cards": 12,
+    "reused": true,
+    "focusRetained": true
+  }
+}

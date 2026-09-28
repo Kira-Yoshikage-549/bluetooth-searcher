@@ -19,7 +19,7 @@ function makeDevice(index, now) {
 }
 let browser;
 (async () => {
-  browser = await chromium.launch({ channel: "chrome", headless: true });
+  browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({ viewport: { width: 1440, height: 960 } });
   const page = await context.newPage();
   page.on("pageerror", error => report.errors.push(error.message));
@@ -51,8 +51,10 @@ let browser;
   check("home has no explanatory microcopy or monitor shortcut", await page.locator(".hero-footnote, .hero-description, .art-label, a[href='/monitor']").count() === 0);
   await page.waitForTimeout(750);
   await page.screenshot({ path: path.join(output, "home-1440.png") });
+  const startWidth = (await page.locator("#startButton").boundingBox()).width;
   await page.locator("#startButton").click();
   check("home start shows busy state before response", await page.locator("#startButton").isDisabled() && new URL(page.url()).pathname === "/");
+  check("loading keeps button label and width", await page.locator("#startButton").innerText() === "开始扫描" && Math.abs((await page.locator("#startButton").boundingBox()).width - startWidth) < 1 && (await page.locator("#homeLoading").innerText()).includes("正在启动"));
   await page.locator("#homeError").waitFor({ state: "visible" });
   check("failed start stays home with a clear error", new URL(page.url()).pathname === "/" && (await page.locator("#homeError").innerText()).includes("电脑蓝牙已关闭"));
   check("home start is retryable", await page.locator("#startButton").isEnabled());
@@ -71,7 +73,8 @@ let browser;
   rows = Array.from({ length: 120 }, (_, index) => makeDevice(index, now));
   history = Object.fromEntries(rows.map(item => [item.id, [{ time_ms: now, rssi: item.last_rssi }]]));
   send(snapshot());
-  await page.waitForFunction(() => document.querySelectorAll(".device-card").length === 120);
+  await page.waitForFunction(() => document.querySelector("#deviceTotal").textContent === "120" && document.querySelectorAll(".device-card").length > 0);
+  check("120 devices are available with bounded card DOM", await page.locator(".device-card").count() < 25);
   check("live devices render and first is selected", await page.locator(".compare-control input:checked").count() === 1);
   check("untrusted names are text", await page.locator(".device-card img").count() === 0 && !await page.evaluate(() => window.bad));
   await page.locator("#searchInput").fill("客厅音箱");
@@ -84,7 +87,7 @@ let browser;
   for (let i = 1; i <= 3; i++) await page.locator('.device-card[data-device-id="' + rows[i].id + '"] input').check();
   await page.locator('.device-card[data-device-id="' + rows[4].id + '"] input').check().catch(() => {});
   await page.waitForTimeout(250);
-  check("four-device limit remains enforced", await page.locator(".compare-control input:checked").count() === 4 && await page.locator("#notice").isVisible());
+  check("four-device limit remains enforced", await page.evaluate((fifth) => selected.length === 4 && !selected.includes(fifth), rows[4].id) && await page.locator("#notice").isVisible());
   await page.locator('[data-window="300"]').click();
   check("five-minute chart range works", await page.locator('[data-window="300"]').getAttribute("aria-pressed") === "true");
   await page.evaluate(() => {
@@ -100,10 +103,10 @@ let browser;
   }
   report.performance = await page.evaluate(() => ({
     cards: document.querySelectorAll(".device-card").length,
-    reused: window.previousCards.every((node, index) => document.querySelectorAll(".device-card")[index] === node),
+    reused: window.previousCards.some((node) => node.isConnected && node.contains(window.previousFocus)),
     focusRetained: document.activeElement === window.previousFocus,
   }));
-  check("120-card updates reuse nodes and retain keyboard focus", report.performance.reused && report.performance.focusRetained);
+  check("windowed updates reuse mounted nodes and retain keyboard focus", report.performance.cards < 25 && report.performance.reused && report.performance.focusRetained);
   await page.screenshot({ path: path.join(output, "monitor-live-1440.png") });
   await page.locator("#stopButton").click();
   await page.waitForFunction(() => currentStatus.scan_state === "stopped" && chart.options.scales.x.max === currentStatus.stopped_at_ms);

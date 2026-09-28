@@ -2,6 +2,7 @@
 
 const startButton = document.getElementById("startButton");
 const errorMessage = document.getElementById("homeError");
+const loadingMessage = document.getElementById("homeLoading");
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 let starting = false;
 
@@ -15,8 +16,10 @@ startButton.addEventListener("click", async () => {
   starting = true;
   startButton.disabled = true;
   startButton.setAttribute("aria-busy", "true");
-  startButton.textContent = "正在启动…";
-  errorMessage.hidden = true;
+  startButton.classList.add("is-busy");
+  loadingMessage.textContent = "正在启动…";
+  errorMessage.textContent = "";
+  errorMessage.classList.add("is-empty");
   syncSignalMotion();
   try {
     const response = await fetch("/api/scan/start", { method: "POST" });
@@ -29,9 +32,10 @@ startButton.addEventListener("click", async () => {
     starting = false;
     startButton.disabled = false;
     startButton.setAttribute("aria-busy", "false");
-    startButton.textContent = "开始扫描";
+    startButton.classList.remove("is-busy");
+    loadingMessage.textContent = "";
     errorMessage.textContent = error.message || "无法连接本机服务，请稍后重试。";
-    errorMessage.hidden = false;
+    errorMessage.classList.remove("is-empty");
     syncSignalMotion();
   }
 });

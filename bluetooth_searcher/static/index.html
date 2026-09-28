@@ -9,18 +9,20 @@
   <script defer src="/static/home.js"></script>
 </head>
 <body class="home-page">
+  <a class="skip-link" href="#homeContent">跳至主内容</a>
   <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
     <symbol id="icon-bluetooth" viewBox="0 0 24 32"><path d="M5 7 20 23 12 30V2l8 7L5 25"/></symbol>
   </defs></svg>
   <header class="topbar"><nav class="nav-inner" aria-label="主导航">
-    <a class="brand" href="/" aria-label="蓝牙信号探测器首页"><svg class="brand-mark" aria-hidden="true"><use href="#icon-bluetooth"/></svg><span>蓝牙信号探测器</span></a>
+    <a class="brand" href="/" aria-label="蓝牙信号探测器首页" translate="no"><svg class="brand-mark" aria-hidden="true"><use href="#icon-bluetooth"/></svg><span>蓝牙信号探测器</span></a>
   </nav></header>
-  <main class="home-main">
+  <main class="home-main" id="homeContent" tabindex="-1">
     <section class="hero" aria-labelledby="heroTitle">
       <div class="hero-copy">
         <h1 id="heroTitle" class="hero-enter">让附近的信号，<br><span>清晰可见。</span></h1>
-        <div class="hero-actions hero-enter"><button class="button button-primary button-hero" id="startButton" type="button">开始扫描</button></div>
-        <p id="homeError" class="home-error" role="alert" hidden></p>
+        <div class="hero-actions hero-enter"><button class="button button-primary button-hero" id="startButton" type="button"><span class="button-spinner" aria-hidden="true"></span><span>开始扫描</span></button></div>
+        <p id="homeLoading" class="loading-status" role="status" aria-live="polite"></p>
+        <p id="homeError" class="home-error is-empty" role="status" aria-live="polite" aria-atomic="true"></p>
       </div>
       <div class="signal-art hero-enter" id="signalArt" aria-hidden="true">
         <div class="signal-halo"></div>
@@ -30,8 +32,8 @@
           <ellipse class="field-ring" cx="380" cy="171" rx="264" ry="90"/>
           <ellipse class="field-ring" cx="380" cy="171" rx="178" ry="61"/>
           <ellipse class="field-ring inner-ring" cx="380" cy="171" rx="91" ry="32"/>
-          <ellipse class="signal-wave" cx="380" cy="171" rx="178" ry="61"/>
-          <ellipse class="signal-wave wave-two" cx="380" cy="171" rx="178" ry="61"/>
+          <g class="signal-wave"><ellipse cx="380" cy="171" rx="178" ry="61"/></g>
+          <g class="signal-wave wave-two"><ellipse cx="380" cy="171" rx="178" ry="61"/></g>
         </svg>
         <div class="signal-core"><svg><use href="#icon-bluetooth"/></svg></div>
       </div>

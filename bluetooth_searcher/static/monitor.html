@@ -16,11 +16,11 @@
     <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
   </defs></svg>
   <header class="topbar"><nav class="nav-inner" aria-label="主导航">
-    <a class="brand" href="/" aria-label="返回蓝牙信号探测器首页"><svg class="brand-mark" aria-hidden="true"><use href="#icon-bluetooth"/></svg><span>蓝牙信号探测器</span></a>
+    <a class="brand" href="/" aria-label="返回蓝牙信号探测器首页" translate="no"><svg class="brand-mark" aria-hidden="true"><use href="#icon-bluetooth"/></svg><span>蓝牙信号探测器</span></a>
     <div class="nav-actions">
       <div class="connection" id="connection" role="status"><span class="dot"></span><span>正在连接</span></div>
-      <button class="button button-primary button-small" id="startButton" data-scan-action="start" type="button">开始扫描</button>
-      <button class="button button-quiet button-small" id="stopButton" data-scan-action="stop" type="button" disabled>停止扫描</button>
+      <button class="button button-primary button-small" id="startButton" data-scan-action="start" type="button"><span class="button-spinner" aria-hidden="true"></span><span>开始扫描</span></button>
+      <button class="button button-quiet button-small" id="stopButton" data-scan-action="stop" type="button" disabled><span class="button-spinner" aria-hidden="true"></span><span>停止扫描</span></button>
     </div>
   </nav></header>
   <main>
@@ -32,22 +32,24 @@
           <div class="metric"><span>扫描状态</span><strong id="scanMetric">待命</strong></div>
           <div class="metric metric-count"><span>最近收到</span><strong><span id="freshCount">0</span><small>台设备</small></strong></div>
         </div>
-        <div class="notice" id="notice" role="alert" hidden></div>
+        <div class="notice is-empty" id="notice" role="status" aria-live="polite" aria-atomic="true"></div>
         <div class="workspace">
           <section class="panel device-panel reveal" aria-labelledby="deviceTitle">
             <div class="panel-heading"><h2 id="deviceTitle">附近设备 <span id="deviceTotal" class="count-pill">0</span></h2></div>
             <div class="device-tools">
-              <label class="search-box"><svg aria-hidden="true"><use href="#icon-search"/></svg><span class="sr-only">搜索设备</span><input id="searchInput" type="search" placeholder="名称、地址或厂商" autocomplete="off"></label>
-              <label class="sort-box"><span class="sr-only">排序</span><select id="sortSelect"><option value="strength">信号最强</option><option value="recent">最近收到</option><option value="name">设备名称</option></select></label>
+              <label class="search-box"><svg aria-hidden="true"><use href="#icon-search"/></svg><span class="sr-only">搜索设备</span><input id="searchInput" name="q" type="search" placeholder="例如：耳机、地址或厂商…" autocomplete="off" spellcheck="false"></label>
+              <label class="sort-box"><span class="sr-only">排序</span><select id="sortSelect" name="sort"><option value="strength">信号最强</option><option value="recent">最近收到</option><option value="name">设备名称</option></select></label>
             </div>
             <div id="deviceList" class="device-list" aria-label="附近蓝牙设备">
-              <div id="deviceEmpty" class="empty-list"><div class="empty-rings" aria-hidden="true"><span></span></div><strong id="emptyTitle">等待设备</strong></div>
+              <div id="deviceEmpty" class="empty-list"><div class="empty-rings" aria-hidden="true"><span></span></div><strong id="emptyTitle">等待设备</strong></div><div id="listTop" class="list-spacer" aria-hidden="true"></div><div id="listBottom" class="list-spacer" aria-hidden="true"></div>
             </div>
           </section>
           <div class="right-column">
             <section class="panel chart-panel reveal" aria-labelledby="chartTitle">
               <div class="panel-heading chart-heading"><h2 id="chartTitle">信号强度趋势</h2><div class="segmented" id="timeRange" role="group" aria-label="图表时间范围"><span class="segment-indicator" aria-hidden="true"></span><button type="button" data-window="60" class="active" aria-pressed="true">60 秒</button><button type="button" data-window="300" aria-pressed="false">5 分钟</button></div></div>
-              <div class="chart-wrap"><canvas id="signalChart" aria-label="所选设备的实时信号强度曲线" role="img"></canvas><div class="chart-empty" id="chartEmpty"><strong>选择设备</strong></div></div>
+              <div class="chart-wrap"><canvas id="signalChart" aria-label="所选设备的实时信号强度曲线；下方可查看数值数据" role="img"></canvas><div class="chart-empty" id="chartEmpty"><strong>选择设备</strong></div></div>
+              <div id="chartLegend" class="chart-legend" role="group" aria-label="曲线显隐"></div>
+              <details id="dataPanel" class="data-panel"><summary>查看数据</summary><div class="data-content"><div class="data-toolbar"><p id="dataSnapshotTime"></p><button id="refreshData" class="button button-quiet" type="button">刷新数据</button></div><div id="dataSummary" class="data-summary"></div><p id="dataEmpty" class="data-empty" hidden></p><div class="table-scroll"><table id="dataTable"><caption class="sr-only">所选设备历史信号采样</caption><thead><tr><th scope="col">时间</th><th scope="col">设备名称与地址</th><th scope="col">RSSI</th></tr></thead><tbody id="dataRows"></tbody></table></div><div class="data-pages"><button id="previousPage" class="button button-quiet" type="button">上一页</button><span id="pageStatus"></span><button id="nextPage" class="button button-quiet" type="button">下一页</button></div></div></details>
             </section>
             <section class="panel detail-panel reveal" aria-labelledby="detailTitle"><div class="panel-heading detail-heading"><h2 id="detailTitle">设备详情</h2></div><div id="detailContent" class="detail-empty">请选择设备</div></section>
           </div>

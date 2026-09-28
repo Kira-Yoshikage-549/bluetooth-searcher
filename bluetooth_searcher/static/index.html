@@ -24,18 +24,26 @@
         <p id="homeLoading" class="loading-status" role="status" aria-live="polite"></p>
         <p id="homeError" class="home-error is-empty" role="status" aria-live="polite" aria-atomic="true"></p>
       </div>
-      <div class="signal-art hero-enter" id="signalArt" aria-hidden="true">
-        <div class="signal-halo"></div>
-        <svg class="signal-field" viewBox="0 0 760 300" fill="none">
-          <defs><linearGradient id="ringGradient" x1="380" y1="40" x2="380" y2="280" gradientUnits="userSpaceOnUse"><stop stop-color="#d8dce4"/><stop offset=".5" stop-color="#f0f2f6"/><stop offset="1" stop-color="#b9cae7"/></linearGradient></defs>
-          <ellipse class="field-ring" cx="380" cy="171" rx="348" ry="118"/>
-          <ellipse class="field-ring" cx="380" cy="171" rx="264" ry="90"/>
-          <ellipse class="field-ring" cx="380" cy="171" rx="178" ry="61"/>
-          <ellipse class="field-ring inner-ring" cx="380" cy="171" rx="91" ry="32"/>
-          <g class="signal-wave"><ellipse cx="380" cy="171" rx="178" ry="61"/></g>
-          <g class="signal-wave wave-two"><ellipse cx="380" cy="171" rx="178" ry="61"/></g>
-        </svg>
-        <div class="signal-core"><svg><use href="#icon-bluetooth"/></svg></div>
+      <div class="signal-art" id="signalArt" aria-hidden="true">
+        <div class="signal-entry hero-enter">
+          <div class="signal-scene" id="signalScene">
+            <div class="signal-field-layer" id="signalFieldLayer">
+              <div class="signal-halo"></div>
+              <svg class="signal-field" viewBox="0 0 760 300" fill="none">
+                <defs><linearGradient id="ringGradient" x1="380" y1="40" x2="380" y2="280" gradientUnits="userSpaceOnUse"><stop stop-color="#d8dce4"/><stop offset=".5" stop-color="#f0f2f6"/><stop offset="1" stop-color="#b9cae7"/></linearGradient></defs>
+                <ellipse class="field-ring" cx="380" cy="171" rx="348" ry="118"/>
+                <ellipse class="field-ring" cx="380" cy="171" rx="264" ry="90"/>
+                <ellipse class="field-ring" cx="380" cy="171" rx="178" ry="61"/>
+                <ellipse class="field-ring inner-ring" cx="380" cy="171" rx="91" ry="32"/>
+                <g class="signal-wave"><ellipse cx="380" cy="171" rx="178" ry="61"/></g>
+                <g class="signal-wave wave-two"><ellipse cx="380" cy="171" rx="178" ry="61"/></g>
+              </svg>
+            </div>
+            <div class="signal-core-layer" id="signalCoreLayer">
+              <div class="signal-core"><svg><use href="#icon-bluetooth"/></svg></div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>

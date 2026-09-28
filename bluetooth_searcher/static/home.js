@@ -10,12 +10,91 @@ const signalArt = document.getElementById("signalArt");
 const signalScene = document.getElementById("signalScene");
 const signalFieldLayer = document.getElementById("signalFieldLayer");
 const signalCoreLayer = document.getElementById("signalCoreLayer");
+const strengthToggle = document.getElementById("strengthToggle");
+const signalSymbol = document.getElementById("signalSymbol");
+const strengthStatus = document.getElementById("strengthStatus");
 let starting = false;
 let signalFrame = null;
+let strengthFrame = null;
+let strengthStatusTimer = null;
 let lastFrameTime = 0;
 let homeContentBounds = null;
+let signalCenter = null;
 let homeContentVisible = typeof IntersectionObserver !== "function";
 const signalPosition = { x: 0, y: 0, targetX: 0, targetY: 0 };
+const pointerPosition = { x: 0, y: 0, active: false };
+const strengthKeys = ["idle", "weak", "medium", "strong"];
+const strengthNames = ["未激活", "弱信号", "中信号", "强信号"];
+const strengthBars = ["", "一格", "两格", "三格"];
+const strengthHysteresis = 0.015;
+let strengthLevel = 0;
+
+function setStrengthLevel(level) {
+  if (strengthLevel === level || !strengthToggle || !signalSymbol || !strengthStatus) return;
+  strengthLevel = level;
+  signalSymbol.dataset.level = strengthKeys[level];
+  const nextLevel = level === 3 ? 1 : level + 1;
+  strengthToggle.setAttribute("aria-label", `当前演示信号：${strengthNames[level]}${level ? `，${strengthBars[level]}` : ""}。点击切换至${strengthNames[nextLevel]}`);
+  if (strengthStatusTimer !== null) window.clearTimeout(strengthStatusTimer);
+  strengthStatusTimer = window.setTimeout(() => {
+    strengthStatus.textContent = `演示信号：${strengthNames[level]}${level ? `，${strengthBars[level]}` : ""}。`;
+    strengthStatusTimer = null;
+  }, 180);
+}
+
+function clearStrengthInteraction() {
+  pointerPosition.active = false;
+  if (strengthFrame !== null) window.cancelAnimationFrame(strengthFrame);
+  strengthFrame = null;
+  setStrengthLevel(0);
+}
+
+function getSignalCenter() {
+  if (!signalCenter) {
+    const artBounds = signalArt.getBoundingClientRect();
+    signalCenter = {
+      x: artBounds.left + strengthToggle.offsetLeft + strengthToggle.offsetWidth / 2,
+      y: artBounds.top + strengthToggle.offsetTop + strengthToggle.offsetHeight / 2,
+    };
+  }
+  return signalCenter;
+}
+
+function levelForDistance(distance) {
+  const inner = 1 / 3;
+  const outer = 2 / 3;
+  if (strengthLevel === 3) {
+    if (distance > outer + strengthHysteresis) return 1;
+    if (distance > inner + strengthHysteresis) return 2;
+    return 3;
+  }
+  if (strengthLevel === 2) {
+    if (distance < inner - strengthHysteresis) return 3;
+    if (distance > outer + strengthHysteresis) return 1;
+    return 2;
+  }
+  if (strengthLevel === 1) {
+    if (distance < inner - strengthHysteresis) return 3;
+    if (distance < outer - strengthHysteresis) return 2;
+    return 1;
+  }
+  return distance <= inner ? 3 : distance <= outer ? 2 : 1;
+}
+
+function queueStrengthUpdate() {
+  if (strengthFrame !== null || !pointerPosition.active) return;
+  strengthFrame = window.requestAnimationFrame(() => {
+    strengthFrame = null;
+    if (!pointerPosition.active || document.hidden) return;
+    const center = getSignalCenter();
+    const radiusX = Math.max(center.x, window.innerWidth - center.x);
+    const radiusY = Math.max(center.y, window.innerHeight - center.y);
+    if (radiusX <= 0 || radiusY <= 0) return;
+    const x = (pointerPosition.x - center.x) / radiusX;
+    const y = (pointerPosition.y - center.y) / radiusY;
+    setStrengthLevel(levelForDistance(Math.hypot(x, y)));
+  });
+}
 
 function renderSignalArt() {
   if (!signalScene || !signalFieldLayer || !signalCoreLayer) return;
@@ -38,6 +117,7 @@ function resetSignalArt() {
 
 function suspendSignalArt() {
   resetSignalArt();
+  clearStrengthInteraction();
   document.body.dataset.artPointer = "false";
 }
 
@@ -79,6 +159,7 @@ function syncPointerMotion() {
   const canFollow = hoverPointer.matches && !motionPreference.matches && !document.hidden && homeContentVisible;
   document.body.dataset.artPointer = String(canFollow);
   if (!canFollow) resetSignalArt();
+  if (!hoverPointer.matches || document.hidden) clearStrengthInteraction();
 }
 
 function syncSignalMotion() {
@@ -87,14 +168,15 @@ function syncSignalMotion() {
   syncPointerMotion();
 }
 
-if (homeContent && signalArt && signalScene && signalFieldLayer && signalCoreLayer) {
-  homeContent.addEventListener("pointerenter", (event) => {
-    if (event.pointerType !== "mouse" || !hoverPointer.matches || motionPreference.matches) return;
-    homeContentBounds = homeContent.getBoundingClientRect();
-  });
+if (homeContent && signalArt && signalScene && signalFieldLayer && signalCoreLayer && strengthToggle && signalSymbol) {
+  document.addEventListener("pointermove", (event) => {
+    if (event.pointerType !== "mouse" || !hoverPointer.matches || document.hidden) return;
+    pointerPosition.x = event.clientX;
+    pointerPosition.y = event.clientY;
+    pointerPosition.active = true;
+    queueStrengthUpdate();
 
-  homeContent.addEventListener("pointermove", (event) => {
-    if (event.pointerType !== "mouse" || !hoverPointer.matches || motionPreference.matches || !homeContentVisible) return;
+    if (motionPreference.matches || !homeContentVisible) return;
     if (!homeContentBounds) homeContentBounds = homeContent.getBoundingClientRect();
     if (!homeContentBounds.width || !homeContentBounds.height) return;
     const x = ((event.clientX - homeContentBounds.left) / homeContentBounds.width) * 2 - 1;
@@ -102,22 +184,40 @@ if (homeContent && signalArt && signalScene && signalFieldLayer && signalCoreLay
     aimSignalArt(x, y);
   });
 
-  homeContent.addEventListener("pointerleave", () => aimSignalArt(0, 0));
-  homeContent.addEventListener("pointercancel", () => aimSignalArt(0, 0));
-
-  const invalidateHomeContentBounds = () => {
-    homeContentBounds = null;
+  document.documentElement.addEventListener("pointerleave", (event) => {
+    if (event.pointerType !== "mouse") return;
+    clearStrengthInteraction();
     aimSignalArt(0, 0);
+  });
+  document.addEventListener("pointercancel", (event) => {
+    if (event.pointerType !== "mouse") return;
+    clearStrengthInteraction();
+    aimSignalArt(0, 0);
+  });
+
+  strengthToggle.addEventListener("click", () => {
+    pointerPosition.active = false;
+    if (strengthFrame !== null) window.cancelAnimationFrame(strengthFrame);
+    strengthFrame = null;
+    setStrengthLevel(strengthLevel === 3 ? 1 : strengthLevel + 1);
+  });
+
+  const invalidateSignalGeometry = () => {
+    homeContentBounds = null;
+    signalCenter = null;
+    queueStrengthUpdate();
   };
-  window.addEventListener("resize", invalidateHomeContentBounds);
-  window.addEventListener("scroll", invalidateHomeContentBounds, { passive: true });
+  window.addEventListener("resize", invalidateSignalGeometry);
+  window.addEventListener("scroll", invalidateSignalGeometry, { passive: true });
   window.addEventListener("blur", suspendSignalArt);
   window.addEventListener("focus", syncPointerMotion);
   window.addEventListener("pagehide", suspendSignalArt);
 
   if (typeof ResizeObserver === "function") {
-    const homeContentObserver = new ResizeObserver(invalidateHomeContentBounds);
-    homeContentObserver.observe(homeContent);
+    const geometryObserver = new ResizeObserver(invalidateSignalGeometry);
+    geometryObserver.observe(homeContent);
+    geometryObserver.observe(signalArt);
+    geometryObserver.observe(signalArt.closest(".hero"));
   }
 
   if (typeof IntersectionObserver === "function") {

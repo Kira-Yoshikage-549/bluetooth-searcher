@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#f5f5f7">
   <title>实时监测 · 蓝牙信号探测器</title>
   <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/scan-transition.js"></script>
   <script defer src="/static/vendor/chart.umd.min.js"></script>
   <script defer src="/static/app.js"></script>
 </head>
@@ -19,7 +20,7 @@
     <a class="brand" href="/" aria-label="返回蓝牙信号探测器首页" translate="no"><svg class="brand-mark" aria-hidden="true"><use href="#icon-bluetooth"/></svg><span>蓝牙信号探测器</span></a>
     <div class="nav-actions">
       <div class="connection" id="connection" role="status"><span class="dot"></span><span>正在连接</span></div>
-      <button class="button button-primary button-small" id="startButton" data-scan-action="start" type="button"><span class="button-spinner" aria-hidden="true"></span><span>开始扫描</span></button>
+      <button class="button button-primary button-small" id="startButton" data-scan-action="start" type="button"><span class="button-spinner" aria-hidden="true"></span><span class="button-label">开始扫描</span></button>
       <button class="button button-quiet button-small" id="stopButton" data-scan-action="stop" type="button" disabled><span class="button-spinner" aria-hidden="true"></span><span>停止扫描</span></button>
     </div>
   </nav></header>

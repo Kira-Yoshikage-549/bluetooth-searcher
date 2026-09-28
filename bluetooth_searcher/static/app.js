@@ -198,6 +198,9 @@ function showTransientNotice(text, tone = "error") {
 function applyStatus(status) {
   statusReceived = true;
   currentStatus = status;
+  const handoffActive = document.documentElement.hasAttribute("data-scan-transition");
+  window.ScanTransition?.onStatus(status);
+  if (handoffActive && status.scan_state !== "scanning") renderStatus();
   scheduleRender();
 }
 
@@ -292,6 +295,9 @@ function renderStatus() {
   const radioLabels = { on: "已开启", off: "已关闭", missing: "未找到", disabled: "已禁用", unknown: "未知" };
   const scanLabels = { stopped: "待命", scanning: "扫描中", error: "需要处理" };
   const scanning = currentStatus.scan_state === "scanning";
+  const startLabel = busy === "start" ? "开始扫描" :
+    !statusReceived && window.ScanTransition?.entryState() === "scanning" ? "扫描中" :
+    !connected ? "连接中" : scanning ? "扫描中" : "开始扫描";
   const freshCount = [...devices.values()].filter((device) => freshness(device) === "fresh").length;
   setText(elements.radio, radioLabels[currentStatus.radio_state] || "未知");
   setText(elements.scan, busy ? (busy === "start" ? "正在启动" : "正在停止") : connected ? scanLabels[currentStatus.scan_state] || "待命" : "连接中");
@@ -299,6 +305,10 @@ function renderStatus() {
   setText(elements.total, numberFormat.format(devices.size));
   document.querySelectorAll("[data-scan-action]").forEach((button) => {
     const start = button.dataset.scanAction === "start";
+    if (start) {
+      setText(button.querySelector(".button-label"), startLabel);
+      button.classList.toggle("is-scanning", startLabel === "扫描中");
+    }
     button.disabled = !!busy || !connected || !statusReceived || (start ? scanning : !scanning);
     button.setAttribute("aria-busy", String(busy === button.dataset.scanAction));
     button.classList.toggle("is-busy", busy === button.dataset.scanAction);
@@ -862,7 +872,7 @@ if ("IntersectionObserver" in window) {
       }
     }
   }, { threshold: 0.05 });
-  if (!motionPreference.matches) document.querySelectorAll(".reveal").forEach((node) => {
+  if (!motionPreference.matches && !document.body.hasAttribute("data-scan-handoff")) document.querySelectorAll(".reveal").forEach((node) => {
     node.classList.add("reveal-pending");
     revealObserver.observe(node);
   });
@@ -873,6 +883,7 @@ motionPreference.addEventListener("change", () => {
     document.getAnimations().forEach((animation) => animation.cancel());
   }
 });
+window.addEventListener("scan-entry-expired", renderStatus);
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) scheduleRender();
 });

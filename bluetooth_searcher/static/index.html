@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#fafafa">
   <title>蓝牙信号探测器 · 让信号清晰可见</title>
   <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/scan-transition.js"></script>
   <script defer src="/static/home.js"></script>
 </head>
 <body class="home-page">
@@ -20,7 +21,7 @@
     <section class="hero" aria-labelledby="heroTitle">
       <div class="hero-copy">
         <h1 id="heroTitle" class="hero-enter">让附近的信号，<br><span>清晰可见。</span></h1>
-        <div class="hero-actions hero-enter"><button class="button button-primary button-hero" id="startButton" type="button"><span class="button-spinner" aria-hidden="true"></span><span>开始扫描</span></button></div>
+        <div class="hero-actions hero-enter"><span class="scan-cta-wrap" id="scanCtaWrap" data-ripple="off"><span class="scan-ripple-layer" aria-hidden="true"><span class="scan-ripple"></span><span class="scan-ripple"></span></span><button class="button button-primary button-hero" id="startButton" type="button"><span class="button-spinner" aria-hidden="true"></span><span class="button-label">开始扫描</span></button></span></div>
         <p id="homeLoading" class="loading-status" role="status" aria-live="polite"></p>
         <p id="homeError" class="home-error is-empty" role="status" aria-live="polite" aria-atomic="true"></p>
       </div>

@@ -13,7 +13,11 @@ const signalCoreLayer = document.getElementById("signalCoreLayer");
 const strengthToggle = document.getElementById("strengthToggle");
 const signalSymbol = document.getElementById("signalSymbol");
 const strengthStatus = document.getElementById("strengthStatus");
+const scanCtaWrap = document.getElementById("scanCtaWrap");
 let starting = false;
+let ripplePointerInside = false;
+let rippleDismissed = false;
+let rippleFadeTimer = null;
 let signalFrame = null;
 let strengthFrame = null;
 let strengthStatusTimer = null;
@@ -166,7 +170,43 @@ function syncSignalMotion() {
   document.body.dataset.scanning = String(starting);
   document.body.dataset.artActive = String(!document.hidden && !motionPreference.matches);
   syncPointerMotion();
+  syncButtonRipple();
 }
+
+function syncButtonRipple() {
+  const active = !starting && !startButton.disabled && !rippleDismissed &&
+    !document.hidden && homeContentVisible && !motionPreference.matches &&
+    ((ripplePointerInside && hoverPointer.matches) || startButton.matches(":focus-visible"));
+  if (active) {
+    window.clearTimeout(rippleFadeTimer);
+    rippleFadeTimer = null;
+    scanCtaWrap.dataset.ripple = "active";
+  } else if (scanCtaWrap.dataset.ripple === "active") {
+    scanCtaWrap.dataset.ripple = "fading";
+    rippleFadeTimer = window.setTimeout(() => {
+      scanCtaWrap.dataset.ripple = "off";
+      rippleFadeTimer = null;
+    }, 120);
+  } else if (scanCtaWrap.dataset.ripple !== "fading") {
+    scanCtaWrap.dataset.ripple = "off";
+  }
+}
+
+startButton.addEventListener("pointerenter", (event) => {
+  if (event.pointerType !== "mouse") return;
+  ripplePointerInside = true;
+  rippleDismissed = false;
+  syncButtonRipple();
+});
+startButton.addEventListener("pointerleave", () => {
+  ripplePointerInside = false;
+  syncButtonRipple();
+});
+startButton.addEventListener("focus", () => { rippleDismissed = false; syncButtonRipple(); });
+startButton.addEventListener("blur", syncButtonRipple);
+startButton.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") { rippleDismissed = true; syncButtonRipple(); }
+});
 
 if (homeContent && signalArt && signalScene && signalFieldLayer && signalCoreLayer && strengthToggle && signalSymbol) {
   document.addEventListener("pointermove", (event) => {
@@ -224,6 +264,7 @@ if (homeContent && signalArt && signalScene && signalFieldLayer && signalCoreLay
     const signalObserver = new IntersectionObserver(([entry]) => {
       homeContentVisible = entry.isIntersecting && entry.intersectionRatio > 0;
       syncPointerMotion();
+      syncButtonRipple();
     });
     signalObserver.observe(homeContent);
   }
@@ -245,7 +286,6 @@ startButton.addEventListener("click", async () => {
     if (!response.ok || status.scan_state !== "scanning") {
       throw new Error(status.error || "扫描未能启动，请稍后重试。");
     }
-    window.location.assign("/monitor");
   } catch (error) {
     starting = false;
     startButton.disabled = false;
@@ -255,11 +295,34 @@ startButton.addEventListener("click", async () => {
     errorMessage.textContent = error.message || "无法连接本机服务，请稍后重试。";
     errorMessage.classList.remove("is-empty");
     syncSignalMotion();
+    return;
   }
+
+  starting = false;
+  startButton.classList.remove("is-busy");
+  startButton.removeAttribute("aria-busy");
+  loadingMessage.textContent = "";
+  suspendSignalArt();
+  syncSignalMotion();
+  try { window.ScanTransition?.prepare(startButton); } catch (_) { /* Visual fallback. */ }
+  window.location.assign("/monitor");
 });
 
 document.addEventListener("visibilitychange", syncSignalMotion);
 motionPreference.addEventListener("change", syncSignalMotion);
 hoverPointer.addEventListener("change", syncSignalMotion);
+window.addEventListener("pageshow", (event) => {
+  if (!event.persisted) return;
+  starting = false;
+  startButton.disabled = false;
+  startButton.removeAttribute("aria-busy");
+  startButton.classList.remove("is-busy");
+  startButton.style.removeProperty("view-transition-name");
+  startButton.querySelector(".button-label").style.removeProperty("view-transition-name");
+  document.documentElement.removeAttribute("data-scan-transition");
+  document.body.removeAttribute("data-scan-handoff");
+  loadingMessage.textContent = "";
+  syncSignalMotion();
+});
 syncSignalMotion();
 

@@ -331,6 +331,13 @@ html[data-scan-transition]::view-transition-image-pair(root) { isolation: auto; 
 .home-page .hero-actions { margin-top: 38px; }
 .home-error { max-width: 520px; margin: 22px auto 0; padding: 16px 20px; border-radius: 14px; background: #fff0ef; color: #a73228; font-size: 15px; line-height: 1.5; }
 .loading-status { min-height: 20px; margin: 12px 0 0; color: #45454d; font-size: 13px; }
+@media (any-hover: hover) and (any-pointer: fine) and (forced-colors: none) {
+  .home-page, .home-page * { cursor: url("/static/bluetooth-cursor.svg") 9 8, auto; }
+  .home-page :is(a[href], button:not(:disabled)),
+  .home-page :is(a[href], button:not(:disabled)) * { cursor: url("/static/bluetooth-cursor.svg") 9 8, pointer; }
+  .home-page button:disabled,
+  .home-page button:disabled * { cursor: url("/static/bluetooth-cursor.svg") 9 8, default; }
+}
 @media (max-width: 600px) {
   .home-main { min-height: calc(100svh - 69px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
   .home-page .nav-inner { flex-wrap: nowrap; }

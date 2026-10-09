@@ -1,11 +1,13 @@
-/* Two-page UI acceptance test. Requires an installed Playwright and Chrome.
+/* Two-page UI acceptance test. Requires an installed Playwright and Chromium.
    All scan requests and WebSocket messages are mocked; no real hardware scan starts. */
 const { chromium } = require("playwright");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const base = process.env.BLUETOOTH_TEST_URL || "http://127.0.0.1:8765";
-const output = path.join(__dirname, "two-page");
+const output = path.resolve(__dirname, process.env.BLUETOOTH_QA_ROOT || "cassette-refinement", "two-page");
+const localChrome = "C:/Users/PC/AppData/Local/ms-playwright/chromium-1243/chrome-win64/chrome.exe";
+const executablePath = process.env.BLUETOOTH_CHROME_PATH || (fs.existsSync(localChrome) ? localChrome : undefined);
 fs.mkdirSync(output, { recursive: true });
 const report = { checks: [], errors: [], viewports: [], performance: null };
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -19,7 +21,7 @@ function makeDevice(index, now) {
 }
 let browser;
 (async () => {
-  browser = await chromium.launch({ headless: true });
+  browser = await chromium.launch({ headless: true, executablePath });
   const context = await browser.newContext({ viewport: { width: 1440, height: 960 } });
   const page = await context.newPage();
   page.on("pageerror", error => report.errors.push(error.message));
@@ -48,7 +50,7 @@ let browser;
   });
   await page.goto(base + "/");
   check("home has only entry content", await page.locator("canvas, #deviceList, #scanMetric").count() === 0);
-  check("home has no explanatory microcopy or monitor shortcut", await page.locator(".hero-footnote, .hero-description, .art-label, a[href='/monitor']").count() === 0);
+  check("home exposes real readouts and monitor navigation", await page.locator("#homeRadio, #homeScan, #homeDeviceCount").count() === 3 && await page.locator("a[href='/monitor']").count() > 0);
   await page.waitForTimeout(750);
   await page.screenshot({ path: path.join(output, "home-1440.png") });
   const startWidth = (await page.locator("#startButton").boundingBox()).width;
@@ -65,7 +67,7 @@ let browser;
   check("successful start navigates to monitor", await page.locator("#signalChart").count() === 1);
   await page.waitForFunction(() => document.querySelector("#connection").classList.contains("online"));
   await page.waitForFunction(() => document.querySelector("#scanMetric").textContent === "扫描中");
-  check("monitor has no explanatory captions", await page.locator(".panel-subtitle, .chart-subtitle, .chart-foot, .list-caption, .privacy-note, .footer, .metric > small").count() === 0);
+  check("monitor exposes instrument headings", await page.locator("#deviceTitle, #chartTitle, #detailTitle").count() === 3);
   check("neutral notice is hidden", await page.locator("#notice").isHidden());
   await page.waitForTimeout(750);
   await page.screenshot({ path: path.join(output, "monitor-empty-1440.png") });
@@ -88,8 +90,8 @@ let browser;
   await page.locator('.device-card[data-device-id="' + rows[4].id + '"] input').check().catch(() => {});
   await page.waitForTimeout(250);
   check("four-device limit remains enforced", await page.evaluate((fifth) => selected.length === 4 && !selected.includes(fifth), rows[4].id) && await page.locator("#notice").isVisible());
-  await page.locator('[data-window="300"]').click();
-  check("five-minute chart range works", await page.locator('[data-window="300"]').getAttribute("aria-pressed") === "true");
+  await page.locator("#windowKnob").click();
+  check("five-minute chart range works", await page.locator("#windowKnob").getAttribute("data-window-seconds") === "300");
   await page.evaluate(() => {
     window.previousCards = [...document.querySelectorAll(".device-card")];
     document.querySelector(".device-card input").focus();
@@ -122,7 +124,7 @@ let browser;
   await page.locator(".brand").click();
   await page.waitForURL(base + "/");
   check("brand returns to clean home", await page.locator("#signalChart").count() === 0 && await page.locator("#startButton").isVisible());
-  for (const width of [1440, 1024, 768, 375, 320]) {
+  for (const width of [1440, 1024, 768, 375, 320, 2880]) {
     await page.setViewportSize({ width, height: 960 });
     await page.waitForTimeout(700);
     const homeOverflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
@@ -137,7 +139,7 @@ let browser;
   }
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.waitForTimeout(100);
-  check("home honours reduced motion", await page.evaluate(() => getComputedStyle(document.querySelector(".signal-wave")).animationName === "none"));
+  check("home honours reduced motion", await page.evaluate(() => [...document.querySelectorAll(".crt-screen, .crt-screen *")].every(node => getComputedStyle(node).animationName === "none")));
   check("no browser script errors", report.errors.length === 0);
   await context.close();
 })().catch(error => { report.failure = error.stack; console.error(error); process.exitCode = 1; })

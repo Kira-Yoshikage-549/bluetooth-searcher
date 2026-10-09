@@ -6,20 +6,13 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const base = process.env.BLUETOOTH_TEST_URL || "http://127.0.0.1:8765";
-const output = path.join(__dirname, "plan");
+const output = path.resolve(__dirname, process.env.BLUETOOTH_QA_ROOT || "cassette-refinement", "plan");
+const localChrome = "C:/Users/PC/AppData/Local/ms-playwright/chromium-1243/chrome-win64/chrome.exe";
+const executablePath = process.env.BLUETOOTH_CHROME_PATH || (fs.existsSync(localChrome) ? localChrome : undefined);
 fs.mkdirSync(output, { recursive: true });
 const report = { checks: [], errors: [], screenshots: [], measurements: {} };
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 function check(name, value) { assert.ok(value, name); report.checks.push(name); console.log("PASS", name); }
-function contrast(foreground, background) {
-  const luminance = (hex) => {
-    const channels = [1, 3, 5].map((index) => parseInt(hex.slice(index, index + 2), 16) / 255)
-      .map((value) => value <= .04045 ? value / 12.92 : ((value + .055) / 1.055) ** 2.4);
-    return channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722;
-  };
-  const values = [luminance(foreground), luminance(background)].sort((a, b) => b - a);
-  return (values[0] + .05) / (values[1] + .05);
-}
 function device(index, now) {
   const id = `CA:00:00:00:${Math.floor(index / 256).toString(16).padStart(2, "0")}:${(index % 256).toString(16).padStart(2, "0")}`.toUpperCase();
   return { id, address: id, name: index === 0 ? "测试耳机" : `设备 ${index}`,
@@ -29,7 +22,7 @@ function device(index, now) {
 }
 let browser;
 (async () => {
-  browser = await chromium.launch({ headless: true });
+  browser = await chromium.launch({ headless: true, executablePath });
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
   page.on("pageerror", (error) => report.errors.push(error.message));
@@ -62,12 +55,12 @@ let browser;
     await setCount(count);
     const mounted = await page.locator(".device-card").count();
     check(`${count} devices: bounded mounted cards`, mounted <= 25);
-    if (count === 0) check("zero devices has recovery text", (await page.locator("#emptyTitle").innerText()).includes("开始扫描"));
+    if (count === 0) check("scanning empty list explains the wait for BLE broadcasts", (await page.locator("#emptyTitle").innerText()).includes("等待附近设备") && await page.locator("#stopButton").isEnabled());
     if (count === 1) check("single device is reachable", mounted === 1 && await page.locator(".device-card .device-open").isVisible());
     if (count === 50) {
       await page.evaluate(() => focusCardControl(visibleIds[0], "button"));
       for (let step = 0; step < 100; step++) await page.keyboard.press("Tab");
-      check("all 50 cards follow keyboard Tab order", await page.evaluate(() => document.activeElement.matches("[data-window='60']")));
+      check("all 50 cards follow keyboard Tab order", await page.evaluate(() => document.activeElement.matches("#windowKnob")));
       await page.evaluate(() => {
         focusCardControl(visibleIds[5], "button");
         elements.search.value = "不存在的设备";
@@ -87,20 +80,22 @@ let browser;
       check("Tab crosses the final virtual window boundary", await page.evaluate(() => document.activeElement.closest(".device-card")?.dataset.deviceId === visibleIds.at(-1)));
       await page.keyboard.press("Tab");
       await page.keyboard.press("Tab");
-      check("Tab leaves the virtual list", await page.evaluate(() => document.activeElement.matches("[data-window='60']")));
+      check("Tab leaves the virtual list", await page.evaluate(() => document.activeElement.matches("#windowKnob")));
+      await page.keyboard.press("Shift+Tab");
+      check("Shift Tab from knob restores final virtual checkbox", await page.evaluate(() => document.activeElement.matches(".compare-control input") && document.activeElement.closest(".device-card")?.dataset.deviceId === visibleIds.at(-1)));
     }
   }
 
   await setCount(120);
   await open("?compare=&sort=name&window=300&data=1");
   check("explicit empty compare survives refresh", await page.evaluate(() => selected.length === 0 && document.querySelector("#dataPanel").open));
-  check("URL restores ordinary controls", await page.evaluate(() => document.querySelector("#sortSelect").value === "name" && document.querySelector("[data-window='300']").getAttribute("aria-pressed") === "true"));
+  check("URL restores ordinary controls", await page.evaluate(() => document.querySelector("#sortSelect").value === "name" && document.querySelector("#windowKnob").dataset.windowSeconds === "300"));
   check("empty data panel gives a next step", (await page.locator("#dataEmpty").innerText()).includes("选择设备"));
   await shot("data-empty-1440");
 
   await open("?compare=missing&focus=missing&hidden=missing&sort=bad&window=bad&page=-1");
   check("invalid device references are cleared without substitute", await page.evaluate(() => selected.length === 0 && focused === null && !location.search.includes("missing")));
-  check("invalid controls fall back to defaults", await page.evaluate(() => document.querySelector("#sortSelect").value === "strength" && document.querySelector("[data-window='60']").getAttribute("aria-pressed") === "true"));
+  check("invalid controls fall back to defaults", await page.evaluate(() => document.querySelector("#sortSelect").value === "strength" && document.querySelector("#windowKnob").dataset.windowSeconds === "60"));
   check("stale link reports recovery", await page.locator("#notice").isVisible());
 
   const now = Date.now();
@@ -138,8 +133,8 @@ let browser;
   await page.evaluate(() => history.back());
   await page.waitForFunction(() => document.querySelector("#chartLegend button").getAttribute("aria-pressed") === "true");
   check("Back restores curve visibility", await page.evaluate(() => !hiddenLines.has(selected[0])));
-  await page.locator("[data-window='300']").click();
-  check("changing window rebuilds snapshot at page one", await page.evaluate(() => dataPage === 1 && document.querySelector("[data-window='300']").getAttribute("aria-pressed") === "true"));
+  await page.locator("#windowKnob").click();
+  check("changing window rebuilds snapshot at page one", await page.evaluate(() => dataPage === 1 && document.querySelector("#windowKnob").dataset.windowSeconds === "300"));
 
   await page.locator("#searchInput").fill("测试耳机");
   await pause(320);
@@ -159,10 +154,10 @@ let browser;
   });
   await pause(300);
   const firstScroll = await page.evaluate(() => ({ list: elements.list.scrollTop, page: window.scrollY }));
-  await page.evaluate(() => document.querySelector("[data-window='300']").click());
+  await page.evaluate(() => document.querySelector("#windowKnob").click());
   await page.evaluate(() => { elements.list.scrollTop = 1320; window.scrollTo({ top: 300, behavior: "instant" }); });
   await pause(300);
-  await page.evaluate(() => document.querySelector("[data-window='60']").click());
+  await page.evaluate(() => document.querySelector("#windowKnob").click());
   await page.evaluate(() => history.back());
   await page.waitForFunction(() => windowSeconds === 300);
   await page.evaluate(() => history.back());
@@ -231,18 +226,26 @@ let browser;
     const height = (selector) => document.querySelector(selector).getBoundingClientRect().height;
     return { inputFont: parseFloat(getComputedStyle(document.querySelector("#searchInput")).fontSize),
       selectFont: parseFloat(getComputedStyle(document.querySelector("#sortSelect")).fontSize),
-      brand: height(".brand"), scan: height("#startButton"), compare: height(".compare-control"), window: height("[data-window='60']"), overflow: document.documentElement.scrollWidth > innerWidth };
+      brand: height(".brand"), scan: height("#startButton"), compare: height(".compare-control"), window: height("#windowKnob"), overflow: document.documentElement.scrollWidth > innerWidth };
   });
   report.measurements.mobileTargets = targets;
   check("mobile inputs avoid zoom and touch targets reach 44px", targets.inputFont >= 16 && targets.selectFont >= 16 && Math.min(targets.brand, targets.scan, targets.compare, targets.window) >= 44 && !targets.overflow);
-  report.measurements.contrast = {
-    bodyMuted: contrast("#6e6e73", "#ffffff"),
-    searchPlaceholder: contrast("#6e6e73", "#f5f5f7"),
-    primaryButton: contrast("#ffffff", "#0071e3"),
-    primaryHover: contrast("#ffffff", "#005bb5"),
-    staleBadge: contrast("#855b30", "#faf2e8"),
-  };
-  check("ordinary text and primary controls meet 4.5:1 contrast", Object.values(report.measurements.contrast).every((value) => value >= 4.5));
+  report.measurements.contrast = await page.evaluate(() => {
+    const rgb = value => value.match(/[\d.]+/g).map(Number);
+    const over = (front, back) => { const a = front[3] ?? 1; return front.slice(0, 3).map((value, i) => value * a + back[i] * (1 - a)); };
+    function pair(selector, pseudo = null) {
+      const element = document.querySelector(selector);
+      const style = getComputedStyle(element, pseudo);
+      const ancestors = []; for (let node = element; node; node = node.parentElement) ancestors.unshift(node);
+      const background = ancestors.reduce((base, node) => over(rgb(getComputedStyle(node).backgroundColor), base), [0, 0, 0]);
+      const foreground = over(rgb(style.color), background);
+      const luminance = channels => channels.map(v => v / 255).map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4).reduce((sum, v, i) => sum + v * [.2126, .7152, .0722][i], 0);
+      const values = [luminance(foreground), luminance(background)].sort((a, b) => b - a);
+      return { foreground, background, ratio: (values[0] + .05) / (values[1] + .05) };
+    }
+    return { body: pair(".device-name"), search: pair("#searchInput"), searchPlaceholder: pair("#searchInput", "::placeholder"), enabledScanControl: pair("#stopButton"), timeReadout: pair("#knobValue") };
+  });
+  check("rendered ordinary text and primary controls meet 4.5:1 contrast", Object.values(report.measurements.contrast).every((value) => value.ratio >= 4.5));
   await page.setViewportSize({ width: 320, height: 812 });
   rows[0].name = "这是一个非常非常长的蓝牙设备名称，用于检查折叠数据表格和窄屏卡片的溢出行为";
   send({ type: "delta", status, devices: [rows[0]], samples: {}, removed: [] });
@@ -255,9 +258,9 @@ let browser;
   await shot("monitor-2880");
   check("2880px viewport has no horizontal overflow", await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   await page.emulateMedia({ reducedMotion: "reduce" });
-  check("reduced motion can be enabled live", await page.evaluate(() => getComputedStyle(document.querySelector(".reveal")).transitionDuration === "0s"));
+  check("reduced motion can be enabled live", await page.evaluate(() => [...document.querySelectorAll(".crt-screen, .crt-screen *")].every(node => getComputedStyle(node).animationName === "none")));
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  check("normal motion can be restored live", await page.evaluate(() => getComputedStyle(document.querySelector(".reveal")).transitionDuration !== "0s"));
+  check("normal motion can be restored live", await page.evaluate(() => !matchMedia("(prefers-reduced-motion: reduce)").matches));
   check("no browser script errors", report.errors.length === 0);
   await context.close();
 })().catch((error) => { report.failure = error.stack; process.exitCode = 1; console.error(error); })

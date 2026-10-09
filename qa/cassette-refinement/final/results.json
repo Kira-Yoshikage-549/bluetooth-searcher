@@ -1,0 +1,326 @@
+{
+  "checks": [
+    "100% zoom home has no CSS zoom or overflow",
+    "native zoom control starts at DPR 1",
+    "100% zoom live monitor has no CSS zoom or overflow",
+    "final-font rendered text and enabled controls exceed 4.5:1",
+    "Chinese fallback has Microsoft YaHei and sans-serif",
+    "axis contrast bound includes static black scans and white noise",
+    "opaque axis strokes with real scanlines and edge vignette exceed 4.5:1",
+    "desktop tick cap stays six without timecode collisions",
+    "mobile tick cap is three without timecode collisions",
+    "final-font mobile input size, targets and long names fit",
+    "50% zoom home has no CSS zoom or overflow",
+    "native Chromium 50% zoom yields DPR .5 and double layout width",
+    "50% zoom live monitor has no CSS zoom or overflow",
+    "clean previews retain four visible curves, sole range knob and readable timecodes",
+    "native zoom checks have no browser script errors"
+  ],
+  "errors": [],
+  "measurements": {
+    "zoom1": {
+      "home": {
+        "dpr": 1,
+        "innerWidth": 1422,
+        "outerWidth": 1440,
+        "innerHeight": 904,
+        "outerHeight": 1000,
+        "cssZoom": "1",
+        "overflow": false
+      },
+      "monitor": {
+        "dpr": 1,
+        "innerWidth": 1422,
+        "outerWidth": 1440,
+        "innerHeight": 904,
+        "outerHeight": 1000,
+        "cssZoom": "1",
+        "overflow": false
+      }
+    },
+    "finalContrast": {
+      "deviceName": {
+        "foreground": [
+          239,
+          232,
+          212
+        ],
+        "background": [
+          37,
+          46,
+          33
+        ],
+        "ratio": 11.508132544327859
+      },
+      "placeholder": {
+        "foreground": [
+          186,
+          183,
+          166
+        ],
+        "background": [
+          7,
+          13,
+          9
+        ],
+        "ratio": 9.725716525436253
+      },
+      "enabledStopButton": {
+        "foreground": [
+          239,
+          232,
+          212
+        ],
+        "background": [
+          68,
+          75,
+          62
+        ],
+        "ratio": 7.392382425649334
+      },
+      "timeReadout": {
+        "foreground": [
+          255,
+          178,
+          62
+        ],
+        "background": [
+          29,
+          39,
+          24
+        ],
+        "ratio": 8.623029515907124
+      },
+      "detail": {
+        "foreground": [
+          186,
+          183,
+          166
+        ],
+        "background": [
+          37,
+          42,
+          39
+        ],
+        "ratio": 7.234745110428469
+      }
+    },
+    "finalFont": {
+      "body": "\"IBM Plex Mono\", \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", sans-serif",
+      "name": "\"IBM Plex Mono\", \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", sans-serif",
+      "plexLoaded": true
+    },
+    "axisOverlay": {
+      "geometry": {
+        "area": {
+          "left": 71.5999755859375,
+          "top": 10.2,
+          "right": 565.2000122070312,
+          "bottom": 301.59999999999997,
+          "height": 291.4,
+          "width": 493.60003662109375
+        },
+        "width": 597,
+        "height": 330,
+        "color": "#C0D2B7",
+        "background": "rgb(7, 13, 9)",
+        "lineOpacity": 0.58,
+        "noiseOpacity": 0.065
+      },
+      "modeledRatio": 5.386580529410588,
+      "samples": 265,
+      "xSamples": 69,
+      "ySamples": 196,
+      "minimum": 5.150791297814064,
+      "p05": 5.304530862045746,
+      "median": 11.31728508118506,
+      "lowest": [
+        {
+          "axis": "y",
+          "x": 41,
+          "y": 81,
+          "ratio": 5.150791297814064
+        },
+        {
+          "axis": "y",
+          "x": 49,
+          "y": 189,
+          "ratio": 5.181984199040164
+        },
+        {
+          "axis": "y",
+          "x": 42,
+          "y": 81,
+          "ratio": 5.192884279810299
+        },
+        {
+          "axis": "y",
+          "x": 28,
+          "y": 225,
+          "ratio": 5.195859664050555
+        },
+        {
+          "axis": "y",
+          "x": 41,
+          "y": 123,
+          "ratio": 5.2029903770750385
+        },
+        {
+          "axis": "y",
+          "x": 49,
+          "y": 228,
+          "ratio": 5.20933289945486
+        },
+        {
+          "axis": "y",
+          "x": 28,
+          "y": 159,
+          "ratio": 5.218694608803664
+        },
+        {
+          "axis": "y",
+          "x": 49,
+          "y": 225,
+          "ratio": 5.230649804111288
+        }
+      ]
+    },
+    "desktopTicks": {
+      "cap": 6,
+      "count": 3,
+      "labels": [
+        {
+          "text": "19:04:44",
+          "center": 71.5999755859375,
+          "width": 57.5999755859375
+        },
+        {
+          "text": "19:05:20",
+          "center": 360.17501032918295,
+          "width": 57.5999755859375
+        },
+        {
+          "text": "19:05:44",
+          "center": 565.2000122070312,
+          "width": 57.5999755859375
+        }
+      ],
+      "noCollision": true
+    },
+    "mobileTicks": {
+      "cap": 3,
+      "count": 2,
+      "labels": [
+        {
+          "text": "19:04:44",
+          "center": 71.5999755859375,
+          "width": 57.5999755859375
+        },
+        {
+          "text": "19:05:44",
+          "center": 271.20001220703125,
+          "width": 57.5999755859375
+        }
+      ],
+      "noCollision": true
+    },
+    "finalMobile": {
+      "inputFont": 16,
+      "selectFont": 16,
+      "overflow": false,
+      "targets": {
+        ".brand": 44,
+        "#stopButton": 54,
+        ".compare-control": 44,
+        "#windowKnob": 60
+      }
+    },
+    "zoom0.5": {
+      "home": {
+        "dpr": 0.5,
+        "innerWidth": 2844,
+        "outerWidth": 1440,
+        "innerHeight": 1808,
+        "outerHeight": 1000,
+        "cssZoom": "1",
+        "overflow": false
+      },
+      "monitor": {
+        "dpr": 0.5,
+        "innerWidth": 2844,
+        "outerWidth": 1440,
+        "innerHeight": 1808,
+        "outerHeight": 1000,
+        "cssZoom": "1",
+        "overflow": false
+      }
+    },
+    "cleanPreviews": [
+      {
+        "width": 1440,
+        "ticks": {
+          "cap": 6,
+          "count": 3,
+          "labels": [
+            {
+              "text": "19:04:51",
+              "center": 71.5999755859375,
+              "width": 57.5999755859375
+            },
+            {
+              "text": "19:05:20",
+              "center": 308.5758928527832,
+              "width": 57.5999755859375
+            },
+            {
+              "text": "19:05:51",
+              "center": 574.2000122070312,
+              "width": 57.5999755859375
+            }
+          ],
+          "noCollision": true
+        },
+        "windowSeconds": 60,
+        "visibleCurves": 4,
+        "devices": 4,
+        "overflow": false,
+        "keyboardFocus": false
+      },
+      {
+        "width": 320,
+        "ticks": {
+          "cap": 3,
+          "count": 2,
+          "labels": [
+            {
+              "text": "19:04:51",
+              "center": 71.5999755859375,
+              "width": 57.5999755859375
+            },
+            {
+              "text": "19:05:51",
+              "center": 216.20001220703125,
+              "width": 57.5999755859375
+            }
+          ],
+          "noCollision": true
+        },
+        "windowSeconds": 60,
+        "visibleCurves": 4,
+        "devices": 4,
+        "overflow": false,
+        "keyboardFocus": false
+      }
+    ]
+  },
+  "screenshots": [
+    "home-native-zoom100.png",
+    "monitor-native-zoom100.png",
+    "monitor-final-fonts-375.png",
+    "home-native-zoom50.png",
+    "monitor-native-zoom50.png",
+    "monitor-clean-1440.png",
+    "monitor-clean-320.png"
+  ],
+  "validation": "Mocked HTTP/WebSocket data. Native Chromium zoom uses fresh temporary profiles and partition.default_zoom_level; CSS zoom and page-scale emulation are not applied. No existing browser profile is used or modified; no real hardware scan starts."
+}

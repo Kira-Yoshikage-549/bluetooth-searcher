@@ -71,3 +71,16 @@ node qa/real_frontend_check.cjs
 - 两页在 1440、1024、768、375、320px 窗口均无横向溢出，浏览器页面错误为 0。
 - 真实硬件由首页启动并进入监测页：服务累计 64 台设备、995 条缓存样本，可选 4 台对比。停止后等待 6.2 秒，1037 条样本及图表时间轴保持不变；测试结束扫描状态为 stopped。这些数量包含同一服务进程此前保留的记录。
 - 本轮结果与截图：[浏览器检查](qa/two-page/results.json)、[真实硬件](qa/two-page/hardware-results.json)、[首页](qa/two-page/home-1440.png)、[首页错误](qa/two-page/home-error-1440.png)、[监测页](qa/two-page/monitor-1440.png)、[真实扫描](qa/two-page/real-scanning-1440.png)、[窄屏首页](qa/two-page/home-375.png)、[窄屏监测页](qa/two-page/monitor-375.png)。
+
+
+## 2026-10-08 卡带未来主义改版
+
+首页改为读取真实本机状态的启动控制台，监测页重排为 RX／SCOPE／ID 模块，保留 HTTP／WebSocket、虚拟化、URL 与历史数据行为。硬件材质和 CRT 纹理使用本地 CSS／SVG，IBM Plex Mono 字体附带 OFL 许可证。
+
+本次自动化、实际 Chromium 50% 浏览器缩放、性能测量和真实蓝牙验证的完整结果见 [qa/cassette/REPORT.md](qa/cassette/REPORT.md)。截图与 JSON 证据集中保存在 qa/cassette/，旧版验收记录保持独立。
+
+## 2026-10-08 Impeccable 审核与完善
+
+本轮修复设备读数的可访问描述、断线状态、空状态恢复、表格分页播报、触摸取消、功能小字号和 320px 状态断词，并完善旋钮提示与有限换台雪花。170 项前端检查、9 项 Python 测试及语法／差异检查通过；独立截图审核提出的窄屏问题已修复并复核通过。
+
+全部浏览器数据均被模拟，本轮没有执行真实蓝牙扫描。具体测量条件、验证范围、截图及复现入口见 [本轮审核报告](qa/impeccable/REPORT.md)，设计规则见 [DESIGN.md](DESIGN.md)。

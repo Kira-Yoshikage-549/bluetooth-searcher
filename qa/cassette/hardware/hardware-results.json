@@ -1,0 +1,60 @@
+{
+  "errors": [],
+  "initial": {
+    "scan_state": "stopped",
+    "radio_state": "on",
+    "error": null,
+    "stopped_at_ms": null,
+    "fresh_count": 0,
+    "device_count": 0
+  },
+  "beforeStart": {
+    "scan_state": "stopped",
+    "radio_state": "on",
+    "error": null,
+    "stopped_at_ms": null,
+    "fresh_count": 0,
+    "device_count": 0
+  },
+  "live": {
+    "devices": 41,
+    "sampleCount": 370,
+    "visibleCards": 13,
+    "status": {
+      "scan_state": "scanning",
+      "radio_state": "on",
+      "error": null,
+      "stopped_at_ms": null,
+      "fresh_count": 28,
+      "device_count": 41
+    }
+  },
+  "compared": 4,
+  "comparison": {
+    "ids": [
+      "36:7B:79:E6:B3:76",
+      "22:19:E2:8B:56:E3",
+      "69:D4:0B:D7:37:8C",
+      "52:DB:53:E9:69:F6"
+    ],
+    "datasets": 4,
+    "expected": 4
+  },
+  "stoppedBaseline": {
+    "end": 1791455721952,
+    "count": 402
+  },
+  "historyPreserved": true,
+  "afterWait": {
+    "end": 1791455721952,
+    "count": 402
+  },
+  "final": {
+    "scan_state": "stopped",
+    "radio_state": "on",
+    "error": null,
+    "stopped_at_ms": 1791455721952,
+    "fresh_count": 0,
+    "device_count": 41
+  }
+}

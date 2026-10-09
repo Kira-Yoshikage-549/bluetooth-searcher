@@ -1,0 +1,93 @@
+{
+  "checks": [
+    "home text selection uses the amber console palette",
+    "Chromium accessibility tree exposes RSSI, strength and address as device description",
+    "detail module provides last measured RSSI as text",
+    "weak numeric reading shares the orange bar semantics",
+    "live readout refresh retains device node and description ID",
+    "range knob triggers one 12-fps snow burst and retains keyboard focus",
+    "range snow ends without changing chart data",
+    "reduced motion disables range snow while keeping range selection",
+    "data pagination reports the new page through a polite live region",
+    "all hidden traces show the explicit legend recovery",
+    "synthetic touch starts list interaction guard",
+    "touchcancel releases sorting guard",
+    "lost window focus also releases list interaction guard",
+    "six monitor layouts retain no page overflow, 16px inputs and 44px knob",
+    "320px SYS keeps scanning, starting, stopping and error states on one line",
+    "disconnected adapter becomes unknown instead of showing cached green state",
+    "scanning empty state asks to wait for BLE broadcasts",
+    "idle empty state offers the enabled scan action",
+    "empty search keeps a useful correction instruction",
+    "no browser script errors"
+  ],
+  "errors": [],
+  "measurements": {
+    "browserVersion": "153.0.8010.12",
+    "layouts": [
+      {
+        "width": 320,
+        "overflow": false,
+        "inputSize": 16,
+        "knob": 60
+      },
+      {
+        "width": 390,
+        "overflow": false,
+        "inputSize": 16,
+        "knob": 60
+      },
+      {
+        "width": 768,
+        "overflow": false,
+        "inputSize": 16,
+        "knob": 60
+      },
+      {
+        "width": 1024,
+        "overflow": false,
+        "inputSize": 16,
+        "knob": 60
+      },
+      {
+        "width": 1440,
+        "overflow": false,
+        "inputSize": 16,
+        "knob": 60
+      },
+      {
+        "width": 2880,
+        "overflow": false,
+        "inputSize": 16,
+        "knob": 60
+      }
+    ],
+    "compactStatuses": [
+      {
+        "text": "扫描中",
+        "lines": 1
+      },
+      {
+        "text": "正在启动",
+        "lines": 1
+      },
+      {
+        "text": "正在停止",
+        "lines": 1
+      },
+      {
+        "text": "需要处理",
+        "lines": 1
+      }
+    ]
+  },
+  "screenshots": [
+    "home-1440.png",
+    "home-320.png",
+    "monitor-1440.png",
+    "monitor-320.png",
+    "monitor-390.png",
+    "monitor-disconnected.png"
+  ],
+  "validation": "Headless Chromium with mocked HTTP and WebSocket BLE data. Touch cancellation is a synthetic event, not physical hardware. No real scan starts."
+}

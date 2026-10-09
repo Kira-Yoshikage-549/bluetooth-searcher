@@ -3,62 +3,54 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#fafafa">
-  <title>蓝牙信号探测器 · 让信号清晰可见</title>
-  <link rel="preload" as="image" href="/static/bluetooth-cursor.svg" media="(any-hover: hover) and (any-pointer: fine) and (forced-colors: none)">
+  <meta name="theme-color" content="#252A27">
+  <title>启动控制台 · 蓝牙信号探测器</title>
+  <link rel="preload" as="font" type="font/woff2" href="/static/fonts/IBMPlexMono-Regular.woff2" crossorigin>
   <link rel="stylesheet" href="/static/styles.css">
   <script src="/static/scan-transition.js"></script>
   <script defer src="/static/home.js"></script>
 </head>
 <body class="home-page">
-  <a class="skip-link" href="#homeContent">跳至主内容</a>
-  <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
-    <symbol id="icon-bluetooth" viewBox="0 0 24 32"><path d="M5 7 20 23 12 30V2l8 7L5 25"/></symbol>
-  </defs></svg>
-  <header class="topbar"><nav class="nav-inner" aria-label="主导航">
-    <a class="brand" href="/" aria-label="蓝牙信号探测器首页" translate="no"><svg class="brand-mark" aria-hidden="true"><use href="#icon-bluetooth"/></svg><span>蓝牙信号探测器</span></a>
-  </nav></header>
+  <a class="skip-link" href="#homeContent">跳至启动控制台</a>
+  <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><symbol id="icon-bluetooth" viewBox="0 0 24 32"><path d="M5 7 20 23 12 30V2l8 7L5 25"/></symbol></defs></svg>
+  <header class="topbar">
+    <nav class="nav-inner" aria-label="主导航">
+      <a class="brand" href="/" aria-label="蓝牙信号探测器首页"><svg class="brand-mark" aria-hidden="true"><use href="#icon-bluetooth"/></svg><span>蓝牙信号探测器<small translate="no">BLE / LOCAL RECEIVER</small></span></a>
+      <a class="nav-link" href="/monitor"><span translate="no">MONITOR</span><span>进入监测 <span aria-hidden="true">↗</span></span></a>
+    </nav>
+  </header>
   <main class="home-main" id="homeContent" tabindex="-1">
-    <section class="hero" aria-labelledby="heroTitle">
-      <div class="hero-copy">
-        <h1 id="heroTitle" class="hero-enter">让附近的信号，<br><span>清晰可见。</span></h1>
-        <div class="hero-actions hero-enter"><span class="scan-cta-wrap" id="scanCtaWrap" data-ripple="off"><span class="scan-ripple-layer" aria-hidden="true"><span class="scan-ripple"></span><span class="scan-ripple"></span></span><button class="button button-primary button-hero" id="startButton" type="button"><span class="button-spinner" aria-hidden="true"></span><span class="button-label">开始扫描</span></button></span></div>
-        <p id="homeLoading" class="loading-status" role="status" aria-live="polite"></p>
-        <p id="homeError" class="home-error is-empty" role="status" aria-live="polite" aria-atomic="true"></p>
-      </div>
-      <div class="signal-art" id="signalArt">
-        <div class="signal-entry hero-enter">
-          <div class="signal-scene" id="signalScene">
-            <div class="signal-field-layer" id="signalFieldLayer" aria-hidden="true">
-              <div class="signal-halo"></div>
-              <svg class="signal-field" viewBox="0 0 760 300" fill="none">
-                <defs><linearGradient id="ringGradient" x1="380" y1="40" x2="380" y2="280" gradientUnits="userSpaceOnUse"><stop stop-color="#d8dce4"/><stop offset=".5" stop-color="#f0f2f6"/><stop offset="1" stop-color="#b9cae7"/></linearGradient></defs>
-                <ellipse class="field-ring" cx="380" cy="171" rx="348" ry="118"/>
-                <ellipse class="field-ring" cx="380" cy="171" rx="264" ry="90"/>
-                <ellipse class="field-ring" cx="380" cy="171" rx="178" ry="61"/>
-                <ellipse class="field-ring inner-ring" cx="380" cy="171" rx="91" ry="32"/>
-                <g class="signal-wave"><ellipse cx="380" cy="171" rx="178" ry="61"/></g>
-                <g class="signal-wave wave-two"><ellipse cx="380" cy="171" rx="178" ry="61"/></g>
-              </svg>
-            </div>
-            <div class="signal-core-layer" id="signalCoreLayer">
-              <button class="signal-core" id="strengthToggle" type="button" aria-label="当前演示信号：未激活。点击切换至弱信号">
-                <svg class="signal-symbol" id="signalSymbol" viewBox="0 0 60 62" data-level="idle" aria-hidden="true" focusable="false">
-                  <path class="signal-bar-outline" d="M5 21 C17 7 43 7 55 21 C56.4 22.6 56.4 24 55 25.3 L51.5 28.1 C50.3 29 49.2 28.5 48.2 27.3 C39 16.4 21 16.4 11.8 27.3 C10.8 28.5 9.7 29 8.5 28.1 L5 25.3 C3.6 24 3.6 22.6 5 21 Z"/>
-                  <path class="signal-bar-outline" d="M13.4 31 C22.4 21.6 37.6 21.6 46.6 31 C47.8 32.3 47.8 33.6 46.5 34.8 L43 37.6 C41.8 38.4 40.8 38 39.8 36.9 C34.4 30.8 25.6 30.8 20.2 36.9 C19.2 38 18.2 38.4 17 37.6 L13.5 34.8 C12.2 33.6 12.2 32.3 13.4 31 Z"/>
-                  <path class="signal-bar-outline" d="M21.5 41 C26 36.5 34 36.5 38.5 41 C39.7 42.2 39.7 43.5 38.4 44.6 L35 47.2 C33.8 48.1 32.7 47.7 31.7 46.6 C30.8 45.6 29.2 45.6 28.3 46.6 C27.3 47.7 26.2 48.1 25 47.2 L21.6 44.6 C20.3 43.5 20.3 42.2 21.5 41 Z"/>
-                  <path class="signal-bar-fill" data-step="3" d="M5 21 C17 7 43 7 55 21 C56.4 22.6 56.4 24 55 25.3 L51.5 28.1 C50.3 29 49.2 28.5 48.2 27.3 C39 16.4 21 16.4 11.8 27.3 C10.8 28.5 9.7 29 8.5 28.1 L5 25.3 C3.6 24 3.6 22.6 5 21 Z"/>
-                  <path class="signal-bar-fill" data-step="2" d="M13.4 31 C22.4 21.6 37.6 21.6 46.6 31 C47.8 32.3 47.8 33.6 46.5 34.8 L43 37.6 C41.8 38.4 40.8 38 39.8 36.9 C34.4 30.8 25.6 30.8 20.2 36.9 C19.2 38 18.2 38.4 17 37.6 L13.5 34.8 C12.2 33.6 12.2 32.3 13.4 31 Z"/>
-                  <path class="signal-bar-fill" data-step="1" d="M21.5 41 C26 36.5 34 36.5 38.5 41 C39.7 42.2 39.7 43.5 38.4 44.6 L35 47.2 C33.8 48.1 32.7 47.7 31.7 46.6 C30.8 45.6 29.2 45.6 28.3 46.6 C27.3 47.7 26.2 48.1 25 47.2 L21.6 44.6 C20.3 43.5 20.3 42.2 21.5 41 Z"/>
-                  <ellipse class="signal-dot-outline" cx="30" cy="55.3" rx="4.5" ry="2.6"/>
-                  <ellipse class="signal-dot-fill" cx="30" cy="55.3" rx="4.5" ry="2.6"/>
-                </svg>
-              </button>
-            </div>
+    <section class="console home-console" aria-labelledby="heroTitle">
+      <div class="console-rail"><span class="embossed-label" translate="no">01 / SYS TERMINAL</span><span class="rail-note" translate="no">BLUETOOTH LOW ENERGY</span><span class="screw" aria-hidden="true"></span></div>
+      <div class="screen-bezel">
+        <div class="crt-screen home-screen" id="homeScreen">
+          <span class="crt-scan-pass" aria-hidden="true"></span>
+          <div class="screen-topline"><span translate="no">SYS // RECEIVE STATION</span><time id="homeClock" aria-label="本机时间">—</time></div>
+          <h1 id="heroTitle"><span class="sr-only">蓝牙信号探测器 · BLE SIGNAL TERMINAL</span><span id="terminalTitle" class="terminal-title" aria-hidden="true" translate="no">BLE SIGNAL TERMINAL</span></h1>
+          <p class="screen-subtitle">蓝牙信号探测器<span class="screen-caret" aria-hidden="true">▮</span></p>
+          <div class="home-readouts" aria-label="本机扫描状态">
+            <div class="screen-readout"><span class="readout-label"><span translate="no">PWR</span> / 蓝牙适配器</span><strong id="homeRadio" data-state="unknown">检查中</strong></div>
+            <div class="screen-readout"><span class="readout-label"><span translate="no">SYS</span> / 扫描状态</span><strong id="homeScan" data-state="unknown">检查中</strong></div>
+            <div class="screen-readout"><span class="readout-label"><span translate="no">RX</span> / 已发现设备</span><strong><span id="homeDeviceCount">—</span><small>台</small></strong></div>
           </div>
+          <div class="screen-statusline"><div id="homeConnection" class="connection" data-state="connecting" role="status" aria-live="polite"><span class="dot" aria-hidden="true"></span><span>正在连接本机服务…</span></div><span class="screen-footnote">仅接收 BLE 广播</span></div>
         </div>
       </div>
-      <span class="sr-only" id="strengthStatus" role="status" aria-live="polite" aria-atomic="true">演示信号：未激活。</span>
+      <div class="home-lower">
+        <section class="control-deck" aria-labelledby="controlTitle">
+          <div class="module-caption"><h2 id="controlTitle" class="embossed-label" translate="no">02 / SCAN CONTROL</h2><span class="small-label">扫描控制</span></div>
+          <div class="start-control"><button class="button button-primary button-hero" id="startButton" type="button"><span class="button-spinner" aria-hidden="true"></span><span class="button-label">开始扫描</span></button><div class="control-instruction"><span class="control-code" translate="no">SCAN / EXEC</span><p>接收附近信号，进入实时监测。</p></div></div>
+          <p id="homeLoading" class="loading-status" role="status" aria-live="polite"></p>
+          <p id="homeError" class="home-error is-empty" role="status" aria-live="polite" aria-atomic="true"></p>
+          <button id="retryStatusButton" class="button button-quiet retry-button" type="button" hidden>重试连接</button>
+        </section>
+        <section class="tape-module" aria-labelledby="receiveTitle">
+          <div class="module-caption"><h2 id="receiveTitle" class="embossed-label" translate="no">03 / RECEIVE UNIT</h2><span class="screw" aria-hidden="true"></span></div>
+          <div class="cassette" aria-hidden="true"><div class="cassette-label"><span translate="no">BLE</span><span class="cassette-stripes"></span><span translate="no">RX / SIGNAL</span></div><div class="cassette-window"><span class="tape-reel"></span><span class="tape-path"></span><span class="tape-reel"></span></div><div class="cassette-notch"></div></div>
+          <div class="tape-readout"><span><span translate="no">RECENT RX</span> / 最近收到</span><strong><span id="homeFreshCount">—</span><small>台设备</small></strong></div>
+        </section>
+      </div>
+      <footer class="console-footer"><span class="screw" aria-hidden="true"></span><span class="stripe-band" aria-hidden="true"></span><span class="footer-label" translate="no">BLE — LOCAL SIGNAL RECEIVER</span><span class="vent" aria-hidden="true"></span><span class="screw" aria-hidden="true"></span></footer>
     </section>
   </main>
 </body>

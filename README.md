@@ -11,6 +11,8 @@ Windows 本地网页应用，用这台电脑的蓝牙适配器接收 BLE 广播�
 
 如果端口 8765 已被其他程序占用，启动脚本会显示提示。网页无需单独联网，Chart.js 已放在项目中。
 
+网页采用卡带未来主义控制台设计：首页显示本机适配器、扫描和设备数量状态；监测页按设备、趋势屏和详情分区。对比拨杆使用原生复选框，时间范围由实体旋钮控制：点击或 Enter／Space 切换 60 秒／5 分钟，方向键与 Home／End 可直接选择；旋钮旁的档位文字只作标记。曲线下方的“查看数据”提供历史数值表。CRT 带有静态扫描线、噪点和曲面阴影，加载时只扫过一次光栅。IBM Plex Mono 字体随项目本地提供，系统启用“减少动态效果”时关闭开机、光栅与换台动画。
+
 ## 怎么看信号
 
 - RSSI 单位是 dBm。通常数值越接近 0，接收信号越强。网页把 ≥ −60、−80 至 −60、< −80 dBm 分别显示为强、中、弱。这是显示分级，不是精确距离。
@@ -47,5 +49,11 @@ node --check bluetooth_searcher\static\app.js
 ```
 
 实际验证情况见 [TESTING.md](TESTING.md)。
+
+本次卡带未来主义改版的浏览器、性能和真实蓝牙验证见 [验收报告](qa/cassette/REPORT.md)。
+
+随后加强 CRT 材质与实体控件、移除重复时间档位按键的验证见 [细化验收报告](qa/cassette-refinement/REPORT.md)。前次真实蓝牙记录保留，本轮细化验证使用模拟数据。
+
+按 Impeccable 完善两页的可读性、状态反馈和可访问行为，见 [本轮审核报告](qa/impeccable/REPORT.md) 与 [设计规范](DESIGN.md)。本轮 170 项前端检查及 9 项 Python 测试通过；截图采用模拟数据，没有执行真实蓝牙扫描。
 
 厂商编号离线表生成自 [Bluetooth SIG Assigned Numbers](https://www.bluetooth.com/specifications/assigned-numbers/) 的 `company_identifiers.yaml`，于 2026-09-24 获取，包含 4038 个编号。图表资源是 [Chart.js 4.5.1](https://www.chartjs.org/)，其许可文本保存在 `bluetooth_searcher/static/vendor/LICENSE.chartjs.md`。

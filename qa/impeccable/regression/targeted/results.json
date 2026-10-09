@@ -1,0 +1,427 @@
+{
+  "checks": [
+    "home shows genuine API device and fresh counts",
+    "old demo signal and custom cursor are removed",
+    "CRT has stronger static scan lines, noise and curved inset glass",
+    "raster is a finite decorative stepped compositor pass",
+    "visible home polls status every two seconds",
+    "poll updates real counts, radio and scan readouts",
+    "status polling never overlaps slow requests",
+    "hidden lifecycle pauses new polling requests",
+    "visible lifecycle immediately refreshes status",
+    "status failure offers an accessible retry action",
+    "keyboard retry restores real status",
+    "duplicate start stays guarded with original label and spinner",
+    "start failure preserves home and permits retry",
+    "aborted stale GET and fresh polls cannot erase POST failure",
+    "successful start enters monitor",
+    "RSSI bars use twelve distinct segments and readable units",
+    "history data stays collapsed by default",
+    "Enter switches knob to five minutes and URL state",
+    "Space switches knob back to sixty seconds",
+    "time range has one physical control with static detents",
+    "ArrowRight directly selects five minutes",
+    "same range keyboard selection preserves navigation state",
+    "Home directly selects sixty seconds",
+    "ArrowUp selects the longer range",
+    "ArrowDown selects the shorter range",
+    "physical knob click toggles range",
+    "Back synchronizes static detents and knob",
+    "Forward synchronizes static detents and knob",
+    "physical compare toggle keeps native keyboard checkbox semantics",
+    "four curves retain separate cassette colors and line patterns",
+    "rendered CRT curve colors exceed 3:1 contrast",
+    "chart has native keyboard legend buttons",
+    "knob keyboard focus is visible",
+    "decorative motion settles with no persistent loop",
+    "monitor fits 320px",
+    "320px stacks RX-SCOPE-ID",
+    "home fits 320px",
+    "monitor fits 375px",
+    "375px stacks RX-SCOPE-ID",
+    "home fits 375px",
+    "monitor fits 768px",
+    "768px places ID below SCOPE",
+    "home fits 768px",
+    "monitor fits 1024px",
+    "1024px places ID below SCOPE",
+    "home fits 1024px",
+    "monitor fits 1440px",
+    "1440px uses RX-SCOPE-ID three columns",
+    "home fits 1440px",
+    "monitor fits 2880px",
+    "2880px uses RX-SCOPE-ID three columns",
+    "home fits 2880px",
+    "50% zoom emulation has no overflow",
+    "reduced motion disables CRT and step animations",
+    "reduced motion title appears complete immediately",
+    "reduced monitor has no animated decorative loops",
+    "failed local fonts retain readable fallback and fit narrow home",
+    "font fallback retains monitor controls and narrow layout",
+    "local IBM Plex Mono loads without external runtime requests",
+    "both pages declare dark native controls and matching theme color",
+    "no browser script errors"
+  ],
+  "errors": [],
+  "requests": [
+    "http://127.0.0.1:8765/",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/home.js",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/api/scan/start",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/api/scan/start",
+    "http://127.0.0.1:8765/monitor",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/vendor/chart.umd.min.js",
+    "http://127.0.0.1:8765/static/app.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/home.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/monitor",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/vendor/chart.umd.min.js",
+    "http://127.0.0.1:8765/static/app.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/home.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/monitor",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/vendor/chart.umd.min.js",
+    "http://127.0.0.1:8765/static/app.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/home.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/monitor",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/vendor/chart.umd.min.js",
+    "http://127.0.0.1:8765/static/app.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/home.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/monitor",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/vendor/chart.umd.min.js",
+    "http://127.0.0.1:8765/static/app.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/home.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/monitor",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/vendor/chart.umd.min.js",
+    "http://127.0.0.1:8765/static/app.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/home.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/monitor",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/vendor/chart.umd.min.js",
+    "http://127.0.0.1:8765/static/app.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/home.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status",
+    "http://127.0.0.1:8765/monitor",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-Regular.woff2",
+    "http://127.0.0.1:8765/static/styles.css",
+    "http://127.0.0.1:8765/static/scan-transition.js",
+    "http://127.0.0.1:8765/static/vendor/chart.umd.min.js",
+    "http://127.0.0.1:8765/static/app.js",
+    "http://127.0.0.1:8765/static/fonts/IBMPlexMono-SemiBold.woff2",
+    "http://127.0.0.1:8765/api/status"
+  ],
+  "screenshots": [
+    "home-error.png",
+    "monitor-four-curves-1440.png",
+    "monitor-320.png",
+    "home-320.png",
+    "monitor-375.png",
+    "home-375.png",
+    "monitor-768.png",
+    "home-768.png",
+    "monitor-1024.png",
+    "home-1024.png",
+    "monitor-1440.png",
+    "home-1440.png",
+    "monitor-2880.png",
+    "home-2880.png",
+    "monitor-zoom50.png",
+    "home-reduced-motion.png",
+    "home-font-fallback-320.png",
+    "monitor-font-fallback-320.png"
+  ],
+  "measurements": {
+    "browserVersion": "153.0.8010.12",
+    "crt": {
+      "radius": "26px / 18px",
+      "edgeShadow": "rgba(0, 0, 0, 0.867) 0px 0px 52px 18px inset, rgb(123, 131, 105) 0px 0px 0px 2px, rgb(24, 32, 18) 0px 0px 0px 5px, rgb(16, 22, 12) 0px 6px 2px 0px",
+      "lineImage": "repeating-linear-gradient(rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0.6) 2px, rgba(0, 0, 0, 0.6) 3px), repeating-linear-gradient(to right, rgba(116, 255, 154, 0.04) 0px, rgba(116, 255, 154, 0.04) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 3px)",
+      "lineOpacity": 0.58,
+      "noiseOpacity": 0.065,
+      "raster": {
+        "duration": "3s",
+        "delay": "0.25s",
+        "steps": "steps(36)",
+        "iterations": "1",
+        "decorative": "true",
+        "pointerEvents": "none"
+      },
+      "animatedProperties": [
+        "opacity",
+        "transform"
+      ]
+    },
+    "curves": [
+      {
+        "color": "#74FF9A",
+        "dash": []
+      },
+      {
+        "color": "#FFB23E",
+        "dash": [
+          8,
+          4
+        ]
+      },
+      {
+        "color": "#F08B48",
+        "dash": [
+          3,
+          4
+        ]
+      },
+      {
+        "color": "#D2C5A4",
+        "dash": [
+          10,
+          3,
+          2,
+          3
+        ]
+      }
+    ],
+    "curveContrast": [
+      {
+        "color": "#74FF9A",
+        "screen": [
+          7,
+          13,
+          9
+        ],
+        "ratio": 15.425010282576041
+      },
+      {
+        "color": "#FFB23E",
+        "screen": [
+          7,
+          13,
+          9
+        ],
+        "ratio": 10.919374006131916
+      },
+      {
+        "color": "#F08B48",
+        "screen": [
+          7,
+          13,
+          9
+        ],
+        "ratio": 7.932081076791562
+      },
+      {
+        "color": "#D2C5A4",
+        "screen": [
+          7,
+          13,
+          9
+        ],
+        "ratio": 11.454779756405236
+      }
+    ],
+    "focus": {
+      "outlineStyle": "solid",
+      "outlineWidth": "3px",
+      "outlineColor": "rgb(255, 178, 62)"
+    },
+    "layout320": {
+      "overflow": false,
+      "device": {
+        "x": 14,
+        "y": 125,
+        "width": 292
+      },
+      "chart": {
+        "x": 14,
+        "y": 758,
+        "width": 292
+      },
+      "detail": {
+        "x": 14,
+        "y": 1570,
+        "width": 292
+      }
+    },
+    "layout375": {
+      "overflow": false,
+      "device": {
+        "x": 14,
+        "y": 424,
+        "width": 347
+      },
+      "chart": {
+        "x": 14,
+        "y": 1057,
+        "width": 347
+      },
+      "detail": {
+        "x": 14,
+        "y": 1818,
+        "width": 347
+      }
+    },
+    "layout768": {
+      "overflow": false,
+      "device": {
+        "x": 20,
+        "y": 381,
+        "width": 310
+      },
+      "chart": {
+        "x": 348,
+        "y": 381,
+        "width": 400
+      },
+      "detail": {
+        "x": 348,
+        "y": 1173,
+        "width": 400
+      }
+    },
+    "layout1024": {
+      "overflow": false,
+      "device": {
+        "x": 20,
+        "y": 381,
+        "width": 310
+      },
+      "chart": {
+        "x": 348,
+        "y": 381,
+        "width": 656
+      },
+      "detail": {
+        "x": 348,
+        "y": 1173,
+        "width": 656
+      }
+    },
+    "layout1440": {
+      "overflow": false,
+      "device": {
+        "x": 32,
+        "y": 318,
+        "width": 362
+      },
+      "chart": {
+        "x": 412,
+        "y": 318,
+        "width": 670
+      },
+      "detail": {
+        "x": 1100,
+        "y": 318,
+        "width": 308
+      }
+    },
+    "layout2880": {
+      "overflow": false,
+      "device": {
+        "x": 640,
+        "y": 318,
+        "width": 423
+      },
+      "chart": {
+        "x": 1081,
+        "y": 318,
+        "width": 782
+      },
+      "detail": {
+        "x": 1881,
+        "y": 318,
+        "width": 359
+      }
+    },
+    "zoom50": {
+      "zoom": "0.5",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "deviceWidth": 211.34375
+    }
+  },
+  "validation": "Simulated HTTP/WebSocket data in headless Chromium. Visibility lifecycle and 50% zoom are emulated; real Bluetooth, native Windows browser UI, Safari, and iOS hardware are not validated here."
+}

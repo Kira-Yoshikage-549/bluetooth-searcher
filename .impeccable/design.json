@@ -1,0 +1,394 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-08T14:43:48Z",
+  "title": "Design System: 蓝牙信号探测器",
+  "extensions": {
+    "colorMeta": {
+      "page": {
+        "role": "neutral",
+        "displayName": "深炭底",
+        "tonalRamp": [
+          "oklch(15% 0.0050 173.86)",
+          "oklch(26% 0.0050 173.86)",
+          "oklch(38% 0.0050 173.86)",
+          "oklch(49% 0.0050 173.86)",
+          "oklch(61% 0.0050 173.86)",
+          "oklch(72% 0.0050 173.86)",
+          "oklch(84% 0.0050 173.86)",
+          "oklch(95% 0.0050 173.86)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "炭灰外壳",
+        "tonalRamp": [
+          "oklch(15% 0.0090 159.48)",
+          "oklch(26% 0.0090 159.48)",
+          "oklch(38% 0.0090 159.48)",
+          "oklch(49% 0.0090 159.48)",
+          "oklch(61% 0.0090 159.48)",
+          "oklch(72% 0.0090 159.48)",
+          "oklch(84% 0.0090 159.48)",
+          "oklch(95% 0.0090 159.48)"
+        ]
+      },
+      "olive": {
+        "role": "secondary",
+        "displayName": "军绿",
+        "tonalRamp": [
+          "oklch(15% 0.0283 129.31)",
+          "oklch(26% 0.0283 129.31)",
+          "oklch(38% 0.0283 129.31)",
+          "oklch(49% 0.0283 129.31)",
+          "oklch(61% 0.0283 129.31)",
+          "oklch(72% 0.0283 129.31)",
+          "oklch(84% 0.0283 129.31)",
+          "oklch(95% 0.0283 129.31)"
+        ]
+      },
+      "plastic": {
+        "role": "secondary",
+        "displayName": "米色塑料",
+        "tonalRamp": [
+          "oklch(15% 0.0467 89.08)",
+          "oklch(26% 0.0467 89.08)",
+          "oklch(38% 0.0467 89.08)",
+          "oklch(49% 0.0467 89.08)",
+          "oklch(61% 0.0467 89.08)",
+          "oklch(72% 0.0467 89.08)",
+          "oklch(84% 0.0467 89.08)",
+          "oklch(95% 0.0467 89.08)"
+        ]
+      },
+      "screen": {
+        "role": "neutral",
+        "displayName": "暗 CRT",
+        "tonalRamp": [
+          "oklch(15% 0.0132 156.45)",
+          "oklch(26% 0.0132 156.45)",
+          "oklch(38% 0.0132 156.45)",
+          "oklch(49% 0.0132 156.45)",
+          "oklch(61% 0.0132 156.45)",
+          "oklch(72% 0.0132 156.45)",
+          "oklch(84% 0.0132 156.45)",
+          "oklch(95% 0.0132 156.45)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "暖浅文字",
+        "tonalRamp": [
+          "oklch(15% 0.0276 90.91)",
+          "oklch(26% 0.0276 90.91)",
+          "oklch(38% 0.0276 90.91)",
+          "oklch(49% 0.0276 90.91)",
+          "oklch(61% 0.0276 90.91)",
+          "oklch(72% 0.0276 90.91)",
+          "oklch(84% 0.0276 90.91)",
+          "oklch(95% 0.0276 90.91)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "灰米文字",
+        "tonalRamp": [
+          "oklch(15% 0.0238 98.73)",
+          "oklch(26% 0.0238 98.73)",
+          "oklch(38% 0.0238 98.73)",
+          "oklch(49% 0.0238 98.73)",
+          "oklch(61% 0.0238 98.73)",
+          "oklch(72% 0.0238 98.73)",
+          "oklch(84% 0.0238 98.73)",
+          "oklch(95% 0.0238 98.73)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "灰绿接缝",
+        "tonalRamp": [
+          "oklch(15% 0.0298 127.04)",
+          "oklch(26% 0.0298 127.04)",
+          "oklch(38% 0.0298 127.04)",
+          "oklch(49% 0.0298 127.04)",
+          "oklch(61% 0.0298 127.04)",
+          "oklch(72% 0.0298 127.04)",
+          "oklch(84% 0.0298 127.04)",
+          "oklch(95% 0.0298 127.04)"
+        ]
+      },
+      "green": {
+        "role": "primary",
+        "displayName": "荧光绿",
+        "tonalRamp": [
+          "oklch(15% 0.1845 150.11)",
+          "oklch(26% 0.1845 150.11)",
+          "oklch(38% 0.1845 150.11)",
+          "oklch(49% 0.1845 150.11)",
+          "oklch(61% 0.1845 150.11)",
+          "oklch(72% 0.1845 150.11)",
+          "oklch(84% 0.1845 150.11)",
+          "oklch(95% 0.1845 150.11)"
+        ]
+      },
+      "amber": {
+        "role": "primary",
+        "displayName": "琥珀色",
+        "tonalRamp": [
+          "oklch(15% 0.1534 72.95)",
+          "oklch(26% 0.1534 72.95)",
+          "oklch(38% 0.1534 72.95)",
+          "oklch(49% 0.1534 72.95)",
+          "oklch(61% 0.1534 72.95)",
+          "oklch(72% 0.1534 72.95)",
+          "oklch(84% 0.1534 72.95)",
+          "oklch(95% 0.1534 72.95)"
+        ]
+      },
+      "orange": {
+        "role": "primary",
+        "displayName": "操作橙",
+        "tonalRamp": [
+          "oklch(15% 0.1473 51.88)",
+          "oklch(26% 0.1473 51.88)",
+          "oklch(38% 0.1473 51.88)",
+          "oklch(49% 0.1473 51.88)",
+          "oklch(61% 0.1473 51.88)",
+          "oklch(72% 0.1473 51.88)",
+          "oklch(84% 0.1473 51.88)",
+          "oklch(95% 0.1473 51.88)"
+        ]
+      },
+      "rust": {
+        "role": "tertiary",
+        "displayName": "铁锈色",
+        "tonalRamp": [
+          "oklch(15% 0.1041 42.94)",
+          "oklch(26% 0.1041 42.94)",
+          "oklch(38% 0.1041 42.94)",
+          "oklch(49% 0.1041 42.94)",
+          "oklch(61% 0.1041 42.94)",
+          "oklch(72% 0.1041 42.94)",
+          "oklch(84% 0.1041 42.94)",
+          "oklch(95% 0.1041 42.94)"
+        ]
+      },
+      "warning": {
+        "role": "tertiary",
+        "displayName": "警示红",
+        "tonalRamp": [
+          "oklch(15% 0.1775 27.66)",
+          "oklch(26% 0.1775 27.66)",
+          "oklch(38% 0.1775 27.66)",
+          "oklch(49% 0.1775 27.66)",
+          "oklch(61% 0.1775 27.66)",
+          "oklch(72% 0.1775 27.66)",
+          "oklch(84% 0.1775 27.66)",
+          "oklch(95% 0.1775 27.66)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "终端标题",
+        "purpose": "首页英文 CRT 标题；手机使用已实现的独立 clamp。"
+      },
+      "headline": {
+        "displayName": "页面标题",
+        "purpose": "监测页中文标题。"
+      },
+      "title": {
+        "displayName": "模块标题",
+        "purpose": "硬件分仓中文标题。"
+      },
+      "body": {
+        "displayName": "提示正文",
+        "purpose": "提示与错误说明；短操作说明保留较小的真实角色。"
+      },
+      "label": {
+        "displayName": "压字标签",
+        "purpose": "模块编号、英文仪表缩写；功能文字下限为 11px。"
+      }
+    },
+    "shadows": [
+      {
+        "name": "hardware-shell",
+        "value": "inset 2px 3px 0 #939b7855, inset -3px -3px 0 #0d130c99, 0 2px 0 #717a6055, 0 10px 18px #0004, 0 3px 1px #000",
+        "purpose": "控制台和面板的厚外壳。"
+      },
+      {
+        "name": "physical-key",
+        "value": "inset 2px 3px 0 #ffffff55, inset -2px -4px 0 #0003, 0 5px 0 #535141, 0 7px 0 2px #10130f",
+        "purpose": "实体键抬起状态。"
+      },
+      {
+        "name": "crt-inset",
+        "value": "inset 0 0 52px 18px #000d, 0 0 0 2px #7b8369, 0 0 0 5px #182012, 0 6px 2px #10160c",
+        "purpose": "CRT 暗角与硬件屏幕边框。"
+      },
+      {
+        "name": "embossed-label",
+        "value": "inset 0 1px #090c08, 1px 2px 0 #090c08, 2px 3px 0 #67705b55",
+        "purpose": "模块编号压字标签。"
+      }
+    ],
+    "motion": [
+      {
+        "name": "busy-spinner",
+        "value": "1s steps(12, end) infinite",
+        "purpose": "请求期间的状态指示；减少动态效果时静止显示。"
+      },
+      {
+        "name": "first-raster-pass",
+        "value": "3s steps(36, end) 250ms forwards",
+        "purpose": "首次有限光栅扫过，仅 transform 与 opacity。"
+      },
+      {
+        "name": "crt-boot",
+        "value": "350ms steps(4, end) both",
+        "purpose": "开机有限闪动，减少动态效果时禁用。"
+      },
+      {
+        "name": "channel-snow",
+        "value": "250ms steps(3, end) both",
+        "purpose": "扫描交接与时间换档的短雪花，约 12 帧/秒，可打断。"
+      },
+      {
+        "name": "terminal-character",
+        "value": "83ms",
+        "purpose": "标题逐字显示间隔，仅改变 opacity，辅助技术读取完整静态标题。"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "two-column",
+        "value": "1199px"
+      },
+      {
+        "name": "stacked",
+        "value": "767px"
+      },
+      {
+        "name": "compact",
+        "value": "400px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "主要扫描键",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "操作橙实体键；预览展示形状与焦点，不发起扫描。",
+      "html": "<button class=\"ds-primary\" type=\"button\">开始扫描</button>",
+      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;padding:12px 17px;border:2px solid #8f8c75;border-radius:2px;box-shadow:inset 2px 3px 0 #ffffff55,inset -2px -4px 0 #0003,0 5px 0 #535141,0 7px 0 2px #10130f;font-family:\"IBM Plex Mono\", \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", sans-serif;font-size:13px;font-weight:600;line-height:1.4;white-space:nowrap;cursor:pointer;touch-action:manipulation;background:var(--orange,#f08b48);border-color:#bc6e37;color:#171a15}.ds-primary:hover,.ds-primary:focus-visible{background:var(--amber,#ffb23e);border-color:#f4d092}.ds-primary:focus-visible{outline:3px solid var(--amber,#ffb23e);outline-offset:4px;}.ds-primary:active{transform:translateY(4px);box-shadow:inset 1px 1px 0 #ffffff33,inset -1px -2px 0 #0003,0 1px 0 #535141,0 3px 0 2px #10130f;}.ds-primary:disabled{cursor:default;color:#c5bda9;background:#353a32;border-color:#717360;box-shadow:inset 0 1px 2px #1117}"
+    },
+    {
+      "name": "次要实体键",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "停止、刷新与分页等次要操作。",
+      "html": "<button class=\"ds-quiet\" type=\"button\">刷新数据</button>",
+      "css": ".ds-quiet{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;padding:12px 17px;border:2px solid #8f8c75;border-radius:2px;box-shadow:inset 2px 3px 0 #ffffff55,inset -2px -4px 0 #0003,0 5px 0 #535141,0 7px 0 2px #10130f;font-family:\"IBM Plex Mono\", \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", sans-serif;font-size:13px;font-weight:600;line-height:1.4;white-space:nowrap;cursor:pointer;touch-action:manipulation;color:var(--ink,#efe8d4);background:#444b3e;border-color:#727962}.ds-quiet:hover,.ds-quiet:focus-visible{background:#58614c;color:#fff4d7;border-color:var(--plastic,#d2c5a4)}.ds-quiet:focus-visible{outline:3px solid var(--amber,#ffb23e);outline-offset:4px;}.ds-quiet:active{transform:translateY(4px);box-shadow:inset 1px 1px 0 #ffffff33,inset -1px -2px 0 #0003,0 1px 0 #535141,0 3px 0 2px #10130f;}.ds-quiet:disabled{cursor:default;color:#c5bda9;background:#353a32;border-color:#717360;box-shadow:inset 0 1px 2px #1117}"
+    },
+    {
+      "name": "搜索内槽",
+      "kind": "input",
+      "refersTo": "search-input",
+      "description": "16px 原生搜索输入，父槽显示焦点。",
+      "html": "<label class=\"ds-search\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"10.5\" cy=\"10.5\" r=\"6.5\"/><path d=\"m16 16 5 5\"/></svg><input type=\"search\" name=\"q\" aria-label=\"搜索设备\" placeholder=\"例如：耳机、地址或厂商…\" autocomplete=\"off\" spellcheck=\"false\"></label>",
+      "css": ".ds-search{display:flex;align-items:center;min-width:0;max-width:350px;background:var(--screen,#070d09);border:1px solid #778369;border-radius:2px;touch-action:manipulation}.ds-search:hover{border-color:var(--plastic,#d2c5a4)}.ds-search:focus-within{outline:3px solid var(--amber,#ffb23e);outline-offset:2px;border-color:var(--amber,#ffb23e)}.ds-search svg{flex:0 0 16px;width:16px;height:16px;color:var(--plastic,#d2c5a4);margin-left:10px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:square;stroke-linejoin:miter}.ds-search input{width:100%;min-width:0;min-height:44px;border:0;padding:8px;font-family:\"IBM Plex Mono\", \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", sans-serif;font-size:16px;background:transparent;color:var(--ink,#efe8d4);border-radius:2px;caret-color:var(--amber,#ffb23e);touch-action:manipulation}.ds-search input::placeholder{color:var(--muted,#bab7a6)}.ds-search input:focus-visible{outline:none}"
+    },
+    {
+      "name": "控制台导航",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "真实页面链接、中文品牌与英文仪表缩写。",
+      "html": "<nav class=\"ds-nav\" aria-label=\"主导航组件预览\"><a class=\"ds-brand\" href=\"/\" aria-label=\"蓝牙信号探测器首页\"><svg viewBox=\"0 0 24 32\" aria-hidden=\"true\"><path d=\"M5 7 20 23 12 30V2l8 7L5 25\"/></svg><span>蓝牙信号探测器<small translate=\"no\">BLE / LOCAL RECEIVER</small></span></a><a class=\"ds-nav-link\" href=\"/monitor\"><span translate=\"no\">MONITOR</span><span>进入监测 ↗</span></a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:88px;padding:0 18px;background:var(--surface,#252a27);color:var(--ink,#efe8d4);border-bottom:2px solid #090b09;box-shadow:inset 0 -1px #4b5245;font-family:\"IBM Plex Mono\", \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", sans-serif}.ds-brand{display:flex;align-items:center;gap:14px;min-height:44px;min-width:0;font-size:16px;font-weight:600;color:inherit;text-decoration:none;touch-action:manipulation}.ds-brand svg{flex:0 0 23px;width:23px;height:32px;color:var(--plastic,#d2c5a4);fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter}.ds-brand span{min-width:0}.ds-brand small{display:block;margin-top:5px;font-size:11px;letter-spacing:.16em;color:var(--muted,#bab7a6);font-weight:400}.ds-nav-link{display:flex;gap:14px;align-items:center;min-height:44px;font-size:13px;color:inherit;text-decoration:none;touch-action:manipulation}.ds-nav-link>span:first-child{font-size:11px;letter-spacing:.08em;color:var(--muted,#bab7a6)}.ds-brand:hover,.ds-brand:focus-visible,.ds-nav-link:hover,.ds-nav-link:focus-visible{color:var(--amber,#ffb23e)}.ds-brand:focus-visible,.ds-nav-link:focus-visible{outline:3px solid var(--amber,#ffb23e);outline-offset:4px;}@media(max-width:767px){.ds-brand{font-size:13px;gap:9px}.ds-brand small{letter-spacing:.06em}.ds-nav-link{font-size:11px}.ds-nav-link>span:first-child{display:none}}"
+    },
+    {
+      "name": "内嵌计数",
+      "kind": "chip",
+      "refersTo": "count-chip",
+      "description": "只读计数形状；预览不代表实时设备数量。",
+      "html": "<span class=\"ds-count\" aria-label=\"计数样式预览\">0</span>",
+      "css": ".ds-count{display:inline-block;min-width:28px;padding:2px 5px;background:#151d11;border:1px solid #71805c;color:var(--green,#74ff9a);font-family:\"IBM Plex Mono\", \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", sans-serif;font-size:12px;text-align:center;font-variant-numeric:tabular-nums}"
+    },
+    {
+      "name": "硬件面板",
+      "kind": "card",
+      "refersTo": "hardware-panel",
+      "description": "军绿标题条、压字编号与炭灰厚边外壳。",
+      "html": "<section class=\"ds-panel\" aria-label=\"硬件面板组件预览\"><header class=\"ds-panel-heading\"><div><span class=\"ds-embossed\" translate=\"no\">02 / RX</span><h2>附近设备</h2></div><span class=\"ds-screw\" aria-hidden=\"true\"></span></header><p class=\"ds-panel-content\">组件预览 · 无实时数据</p></section>",
+      "css": ".ds-panel{min-width:0;max-width:400px;background:var(--surface,#252a27);color:var(--ink,#efe8d4);border:2px solid #66705a;border-bottom:6px solid #10140f;border-radius:3px;box-shadow:inset 2px 3px 0 #939b7855,inset -3px -3px 0 #0d130c99,0 2px 0 #717a6055,0 10px 18px #0004,0 3px 1px #000;font-family:\"IBM Plex Mono\", \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", sans-serif}.ds-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px;background:var(--olive,#3f4737);border-bottom:3px solid #151b12;box-shadow:inset 0 2px #96a17c33,0 1px #6b7755}.ds-panel-heading h2{margin:10px 0 0;font-size:17px;font-weight:600;line-height:1.4}.ds-embossed{display:inline-block;padding:5px 9px;background:#111410;color:var(--ink,#efe8d4);border:1px solid #757967;box-shadow:inset 0 1px #090c08,1px 2px 0 #090c08,2px 3px 0 #67705b55;font-size:11px;font-weight:600;letter-spacing:.11em;line-height:1.4;text-shadow:1px 1px #000;white-space:nowrap}.ds-screw{position:relative;display:inline-block;flex:0 0 12px;width:12px;height:12px;border-radius:50%;background:#9a9b80;border:2px solid #141910;box-shadow:inset 1px 1px 0 #dedabe88,0 1px 1px #090b07}.ds-screw::after{content:\"\";position:absolute;left:1px;right:1px;top:3px;height:2px;background:#333a2d;transform:rotate(-35deg)}.ds-panel-content{padding:19px 17px 24px;margin:0;color:var(--muted,#bab7a6);font-size:13px;line-height:1.8;overflow-wrap:anywhere}"
+    },
+    {
+      "name": "对比拨杆",
+      "kind": "custom",
+      "refersTo": "compare-switch",
+      "description": "真实复选框与完整 label 命中区；预览可勾选。",
+      "html": "<label class=\"ds-compare\"><input type=\"checkbox\" name=\"compare\" aria-label=\"对比开关组件预览\"><span>对比</span></label>",
+      "css": ".ds-compare{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;min-width:91px;padding:3px 7px;color:var(--plastic,#d2c5a4);font-family:\"IBM Plex Mono\", \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", sans-serif;font-size:11px;cursor:pointer;touch-action:manipulation}.ds-compare:hover,.ds-compare:focus-within{color:var(--ink,#efe8d4);background:#3c4c30}.ds-compare input{appearance:none;position:relative;width:31px;height:22px;margin:0;border:2px solid #929c7a;border-radius:2px;background:#10170c;box-shadow:inset 0 2px 3px #000,0 2px #080d07,0 0 0 1px #090d08;cursor:pointer;touch-action:manipulation}.ds-compare input::before{content:\"\";position:absolute;top:2px;left:3px;width:8px;height:14px;background:var(--plastic,#d2c5a4);border:1px solid #928975;box-shadow:inset 1px 2px #eee5c8,inset -1px -2px #867d64,1px 1px #000}.ds-compare input:checked{border-color:var(--green,#74ff9a)}.ds-compare input:checked::before{transform:translateX(12px);background:var(--green,#74ff9a);border-color:#5ab478}.ds-compare input:focus-visible{outline:3px solid var(--amber,#ffb23e);outline-offset:3px}@media(forced-colors:active){.ds-compare input{appearance:auto}.ds-compare input::before{display:none}}"
+    },
+    {
+      "name": "时间旋钮",
+      "kind": "custom",
+      "refersTo": "time-knob",
+      "description": "实体 TIME BASE 两档旋钮；预览展示静态 60 秒档形状。",
+      "html": "<div class=\"ds-knob-assembly\"><span class=\"ds-detent ds-detent-active\" aria-hidden=\"true\" translate=\"no\">60 S</span><button type=\"button\" class=\"ds-knob\" aria-label=\"时间范围旋钮组件预览\"><span class=\"ds-pointer\" aria-hidden=\"true\"></span></button><span class=\"ds-detent\" aria-hidden=\"true\" translate=\"no\">5 MIN</span><span class=\"ds-knob-value\" aria-hidden=\"true\" translate=\"no\">060 SEC</span></div>",
+      "css": ".ds-knob-assembly{display:inline-grid;grid-template-columns:39px 60px 46px;align-items:center;gap:5px 8px;padding:7px 10px 6px;border:1px solid #637052;background:#1d2718;box-shadow:inset 0 2px 2px #0a1008,0 1px #6e775c;font-family:\"IBM Plex Mono\", \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", sans-serif}.ds-detent{color:var(--muted,#bab7a6);font-size:11px;white-space:nowrap;text-align:center}.ds-detent::after{content:\"\";display:block;height:2px;width:10px;margin:5px auto 0;background:#8c957a}.ds-detent-active{color:var(--amber,#ffb23e)}.ds-detent-active::after{background:var(--amber,#ffb23e)}.ds-knob{position:relative;width:60px;height:60px;padding:0;border-radius:50%;background:repeating-conic-gradient(#151c11 0deg 8deg,#576049 8deg 12deg);border:4px double #a59e82;box-shadow:inset 1px 2px #929b78,0 4px #0a1007,0 0 0 2px #0c1309;cursor:pointer;touch-action:manipulation}.ds-knob::after{content:\"\";position:absolute;inset:7px;border:1px solid #657153;border-radius:50%;background:#283122;box-shadow:inset 1px 2px #82906a66,inset -2px -3px #0c150b99}.ds-pointer{display:block;position:absolute;z-index:1;top:5px;left:calc(50% - 2px);width:4px;height:16px;background:var(--plastic,#d2c5a4);box-shadow:1px 1px #050805;transform-origin:50% 21px;transform:rotate(-45deg)}.ds-knob:hover,.ds-knob:focus-visible{border-color:var(--amber,#ffb23e)}.ds-knob:focus-visible{outline:3px solid var(--amber,#ffb23e);outline-offset:4px;}.ds-knob:active{transform:translateY(1px)}.ds-knob-value{grid-column:1 / -1;color:var(--amber,#ffb23e);font-size:11px;white-space:nowrap;text-align:center;letter-spacing:.08em;font-variant-numeric:tabular-nums}"
+    },
+    {
+      "name": "CRT 显示屏",
+      "kind": "custom",
+      "refersTo": "crt-screen",
+      "description": "内凹黑底显示器，静态扫描线与噪点；预览不包含实时读数。",
+      "html": "<div class=\"ds-crt\"><div class=\"ds-screen-topline\"><span translate=\"no\">SYS // RECEIVE STATION</span></div><strong class=\"ds-crt-title\" translate=\"no\">BLE SIGNAL TERMINAL</strong><p class=\"ds-crt-copy\">组件预览 · 无实时数据</p></div>",
+      "css": ".ds-crt{position:relative;isolation:isolate;overflow:hidden;max-width:500px;padding:26px 34px 20px;background:var(--screen,#070d09);color:var(--green,#74ff9a);border:3px solid #030603;border-radius:26px / 18px;text-shadow:0 0 3px #74ff9a26;box-shadow:inset 0 0 52px 18px #000d,0 0 0 2px #7b8369,0 0 0 5px #182012,0 6px 2px #10160c;font-family:\"IBM Plex Mono\", \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", sans-serif}.ds-crt::before,.ds-crt::after{content:\"\";position:absolute;inset:0;z-index:4;pointer-events:none;border-radius:inherit}.ds-crt::before{background-image:repeating-linear-gradient(to bottom,transparent 0 2px,#0009 2px 3px),repeating-linear-gradient(to right,#74ff9a0a 0 1px,transparent 1px 3px);opacity:.58;box-shadow:inset 0 1px 1px #9bd4a455}.ds-crt::after{background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' d='M0 0h120v120H0z'/%3E%3C/svg%3E\");opacity:.065}.ds-screen-topline{color:#a4c1a7;font-size:11px;letter-spacing:.06em}.ds-crt-title{display:block;margin-top:25px;font-size:clamp(34px,5.7vw,70px);font-weight:600;letter-spacing:-.025em;line-height:1.15;text-shadow:0 0 5px #74ff9a33}@media(max-width:767px){.ds-crt-title{font-size:clamp(29px,7.4vw,52px)}}.ds-crt-copy{margin-top:16px;color:var(--ink,#efe8d4);font-size:13px;line-height:1.7;overflow-wrap:anywhere}@media(forced-colors:active){.ds-crt::before,.ds-crt::after{display:none}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "本机 BLE 接收控制台",
+    "overview": "以用户确认的 Cassette Futurism 为视觉世界：七八十年代科幻控制台的厚重外壳、米色塑料与黑底 CRT，组成一台可操作的本机接收设备。炭灰承担底座，军绿定义硬件分仓，绿色与琥珀色读数从暗屏中显现。模块编号、等宽字、压字标签、螺丝、散热槽与几何磁带均是该世界的组成部分。\n\n视觉密度服务于状态和数据阅读。中文承担操作说明，英文缩写承担仪表标签，数字使用等宽数位；实体按键、对比拨杆与时间旋钮同时保留原生按钮、复选框和键盘行为。纹理是静止的材质，开机与换档是短促反馈，减少动态效果时信息立即完整呈现。",
+    "keyCharacteristics": [
+      "炭灰与军绿硬件外壳，米色塑料与橙色操作键。",
+      "黑底 CRT、静态扫描线与噪点，绿色和琥珀色真实读数。",
+      "中文操作说明、英文仪表缩写、本地 IBM Plex Mono。",
+      "小半径分仓、实体按键、可操作拨杆和旋钮。",
+      "可见焦点、触摸目标、原生数据表与静态动效替代。"
+    ],
+    "rules": [
+      {
+        "name": "The Red Lamp Rule",
+        "body": "红色只用于警示灯；错误正文保持琥珀色或暖浅色，普通操作、弱信号和装饰条纹不使用红色。",
+        "section": "colors"
+      },
+      {
+        "name": "The Legible Readout Rule",
+        "body": "功能文字至少为 11px，输入与排序选择为 16px；数值使用等宽数位，长设备名在列表中截断，在详情中可换行完整阅读。",
+        "section": "typography"
+      },
+      {
+        "name": "The Physical Depth Rule",
+        "body": "厚度通过边框、内侧高光和下沿阴影表达；按键按下沿垂直方向移动，CRT 使用向内的暗角，不给数据浮层添加持续漂浮动作。",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do 保持炭灰、军绿、米色塑料与黑底 CRT 的材质分工。",
+      "Do 用绿色、琥珀色、橙色、米色与不同虚线共同识别最多四条曲线。",
+      "Do 为真实状态保留文字说明、未知态和恢复路径；装饰元素隐藏于辅助技术。",
+      "Do 保持功能文字至少 11px、输入文字 16px、交互目标至少 44px，并提供琥珀色可见焦点。",
+      "Do 让拨杆、旋钮、图例和数据表继续使用原生语义及键盘路径。",
+      "Do 将短动效限制于 transform 与 opacity；减少动态效果时直接显示完整信息。"
+    ],
+    "donts": [
+      "Don't 将虚构遥测、装饰读数或模拟设备作为真实接收状态。",
+      "Don't 将红色扩展到按钮、正文、普通信号分级或装饰条纹。",
+      "Don't 以图片或纯装饰形状替代可操作的扫描键、对比复选框与时间按钮。",
+      "Don't 让持续扫描线、噪点位移或磁带转动成为默认循环。",
+      "Don't 只依赖曲线颜色、鼠标悬停或动画读取数据。",
+      "Don't 将本轮指定的模块编号、等宽字体、CRT 纹理或几何硬件外壳视作风格违规。"
+    ]
+  }
+}

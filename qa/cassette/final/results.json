@@ -1,0 +1,149 @@
+{
+  "checks": [
+    "100% zoom home has no CSS zoom or overflow",
+    "native zoom control starts at DPR 1",
+    "100% zoom live monitor has no CSS zoom or overflow",
+    "final-font rendered text and enabled controls exceed 4.5:1",
+    "Chinese fallback has Microsoft YaHei and sans-serif",
+    "final-font mobile input size, targets and long names fit",
+    "50% zoom home has no CSS zoom or overflow",
+    "native Chromium 50% zoom yields DPR .5 and double layout width",
+    "50% zoom live monitor has no CSS zoom or overflow",
+    "native zoom checks have no browser script errors"
+  ],
+  "errors": [],
+  "measurements": {
+    "zoom1": {
+      "home": {
+        "dpr": 1,
+        "innerWidth": 1422,
+        "outerWidth": 1440,
+        "innerHeight": 904,
+        "outerHeight": 1000,
+        "cssZoom": "1",
+        "overflow": false
+      },
+      "monitor": {
+        "dpr": 1,
+        "innerWidth": 1422,
+        "outerWidth": 1440,
+        "innerHeight": 904,
+        "outerHeight": 1000,
+        "cssZoom": "1",
+        "overflow": false
+      }
+    },
+    "finalContrast": {
+      "deviceName": {
+        "foreground": [
+          239,
+          232,
+          212
+        ],
+        "background": [
+          37,
+          46,
+          33
+        ],
+        "ratio": 11.508132544327859
+      },
+      "placeholder": {
+        "foreground": [
+          186,
+          183,
+          166
+        ],
+        "background": [
+          7,
+          13,
+          9
+        ],
+        "ratio": 9.725716525436253
+      },
+      "enabledStopButton": {
+        "foreground": [
+          239,
+          232,
+          212
+        ],
+        "background": [
+          68,
+          75,
+          62
+        ],
+        "ratio": 7.392382425649334
+      },
+      "activeRange": {
+        "foreground": [
+          21,
+          24,
+          23
+        ],
+        "background": [
+          210,
+          197,
+          164
+        ],
+        "ratio": 10.437290189726976
+      },
+      "detail": {
+        "foreground": [
+          186,
+          183,
+          166
+        ],
+        "background": [
+          37,
+          42,
+          39
+        ],
+        "ratio": 7.234745110428469
+      }
+    },
+    "finalFont": {
+      "body": "\"IBM Plex Mono\", \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", sans-serif",
+      "name": "\"IBM Plex Mono\", \"Microsoft YaHei\", \"Microsoft YaHei UI\", \"PingFang SC\", sans-serif",
+      "plexLoaded": true
+    },
+    "finalMobile": {
+      "inputFont": 16,
+      "selectFont": 16,
+      "overflow": false,
+      "targets": {
+        ".brand": 44,
+        "#stopButton": 54,
+        ".compare-control": 44,
+        "[data-window='60']": 44,
+        "#windowKnob": 48
+      }
+    },
+    "zoom0.5": {
+      "home": {
+        "dpr": 0.5,
+        "innerWidth": 2844,
+        "outerWidth": 1440,
+        "innerHeight": 1808,
+        "outerHeight": 1000,
+        "cssZoom": "1",
+        "overflow": false
+      },
+      "monitor": {
+        "dpr": 0.5,
+        "innerWidth": 2844,
+        "outerWidth": 1440,
+        "innerHeight": 1808,
+        "outerHeight": 1000,
+        "cssZoom": "1",
+        "overflow": false
+      }
+    }
+  },
+  "screenshots": [
+    "home-native-zoom100.png",
+    "monitor-native-zoom100.png",
+    "monitor-final-fonts-375.png",
+    "home-native-zoom50.png",
+    "monitor-native-zoom50.png"
+  ],
+  "validation": "Mocked HTTP/WebSocket data. Native Chromium zoom uses fresh temporary profiles and partition.default_zoom_level; CSS zoom and page-scale emulation are not applied. No existing browser profile is used or modified; no real hardware scan starts."
+}
